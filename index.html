@@ -760,13 +760,13 @@
   }
 </style>
 
-<button class="chat-btn" onclick="toggleChat()" title="Chat with us">🤖</button>
+<button class="chat-btn" onclick="toggleChat()" title="Chat with May">👩</button>
 <div class="chat-bubble" id="chatBubble">
   <div class="chat-header">
     <div class="chat-header-left">
-      <div class="chat-avatar">🤖</div>
+      <div class="chat-avatar">👩</div>
       <div class="chat-header-info">
-        <h4>Webzino Assistant</h4>
+        <h4>May — Webzino Assistant</h4>
         <span>🟢 Online — replies instantly</span>
       </div>
     </div>
@@ -780,7 +780,7 @@
 </div>
 
 <script>
-const SYSTEM_PROMPT = `You are a friendly sales assistant for Webzino, a web agency based in Hyderabad, India. Your job is to answer questions, explain packages, and collect client details.
+const SYSTEM_PROMPT = `You are May, a friendly sales assistant for Webzino, a web agency based in Hyderabad, India. Your job is to answer questions, explain packages, and collect client details.
 
 PACKAGES:
 - Basic Website: ₹4,999 (professional website, mobile friendly, contact form, WhatsApp button, free hosting, 48hr delivery)
@@ -812,7 +812,7 @@ function toggleChat() {
   const bubble = document.getElementById('chatBubble');
   bubble.classList.toggle('open');
   if (bubble.classList.contains('open') && messages.length === 0) {
-    setTimeout(() => botMessage("Hi! 👋 Welcome to Webzino! I'm here to help you get a professional website for your business. What would you like to know?", [
+    setTimeout(() => botMessage("Hi! 👋 I'm May, your Webzino assistant! I'm May and I'm here to help you get a professional website for your business. What would you like to know?", [
       "See packages & prices",
       "I want a website",
       "How does it work?",
@@ -826,7 +826,7 @@ function addMsg(text, isUser, quickReplies) {
   const div = document.createElement('div');
   div.className = 'msg' + (isUser ? ' user' : '');
   div.innerHTML = `
-    <div class="msg-avatar">${isUser ? '👤' : '🤖'}</div>
+    <div class="msg-avatar">${isUser ? '👤' : '👩'}</div>
     <div>
       <div class="msg-text">${text}</div>
       ${quickReplies ? `<div class="quick-replies">${quickReplies.map(r => `<button class="qr-btn" onclick="handleQR('${r}')">${r}</button>`).join('')}</div>` : ''}
