@@ -7,12 +7,9 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #06060e;
-    --bg2: #0a0a16;
-    --accent: #6c5ce7;
-    --accent2: #00d2ff;
-    --text: #e8e8f0;
-    --muted: #9a9ab0;
+    --bg: #06060e; --bg2: #0a0a16;
+    --accent: #6c5ce7; --accent2: #00d2ff;
+    --text: #e8e8f0; --muted: #9a9ab0;
     --card: rgba(255,255,255,0.04);
     --grad: linear-gradient(90deg, #6c5ce7, #00d2ff);
   }
@@ -23,48 +20,40 @@
   ::-webkit-scrollbar-track { background: #050509; }
   ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
-  /* ===== CUSTOM CURSOR GLOW ===== */
-  #cursor-glow { position: fixed; top: 0; left: 0; width: 380px; height: 380px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(108,92,231,0.18), transparent 65%);
-    pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: opacity .3s; }
+  /* animated grid background */
+  #grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .35;
+    background-image: linear-gradient(rgba(108,92,231,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(108,92,231,0.08) 1px, transparent 1px);
+    background-size: 60px 60px; animation: gridMove 20s linear infinite; }
+  @keyframes gridMove { to { background-position: 60px 60px; } }
 
-  /* ===== 3D INTRO OVERLAY ===== */
-  #intro { position: fixed; inset: 0; z-index: 9999;
-    background: radial-gradient(circle at 50% 50%, #0a0c18 0%, #06060e 75%);
-    display: flex; align-items: center; justify-content: center; perspective: 900px; overflow: hidden;
-    transition: opacity 1.2s ease, visibility 1.2s ease; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 380px; height: 380px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(108,92,231,0.18), transparent 65%); pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: opacity .3s; }
+
+  /* ===== 3D INTRO ===== */
+  #intro { position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at 50% 50%, #0a0c18 0%, #06060e 75%);
+    display: flex; align-items: center; justify-content: center; perspective: 900px; overflow: hidden; transition: opacity 1.2s ease, visibility 1.2s ease; }
   #intro.hide { opacity: 0; visibility: hidden; }
   #intro::before, #intro::after { content: ''; position: absolute; border-radius: 50%; filter: blur(130px); opacity: 0.45; }
   #intro::before { width: 460px; height: 460px; background: var(--accent); top: -120px; left: -120px; }
   #intro::after  { width: 440px; height: 440px; background: var(--accent2); bottom: -120px; right: -120px; }
   .intro-3d { transform-style: preserve-3d; display: flex; gap: 4px; animation: introCam 3.4s cubic-bezier(.2,.7,.2,1) forwards; }
-  @keyframes introCam {
-    0%   { transform: rotateY(70deg) rotateX(20deg) scale(0.4); }
-    55%  { transform: rotateY(-8deg) rotateX(4deg) scale(1.05); }
-    100% { transform: rotateY(0deg)  rotateX(0deg) scale(1); }
-  }
-  .intro-letter { font-size: clamp(2.6rem, 11vw, 7rem); font-weight: 900; color: #fff; letter-spacing: 2px;
-    transform-style: preserve-3d; text-shadow: 0 0 30px rgba(120,120,255,0.5);
-    opacity: 0; transform: translateZ(-600px) rotateX(90deg); animation: letterIn 0.9s cubic-bezier(.2,.8,.2,1) forwards; }
-  @keyframes letterIn {
-    0%   { opacity: 0; transform: translateZ(-600px) rotateX(90deg) translateY(40px); filter: blur(10px); }
-    100% { opacity: 1; transform: translateZ(0) rotateX(0deg) translateY(0); filter: blur(0); }
-  }
-  .intro-sweep { position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: linear-gradient(100deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%);
+  @keyframes introCam { 0%{transform:rotateY(70deg) rotateX(20deg) scale(0.4)} 55%{transform:rotateY(-8deg) rotateX(4deg) scale(1.05)} 100%{transform:rotateY(0) rotateX(0) scale(1)} }
+  .intro-letter { font-size: clamp(2.6rem,11vw,7rem); font-weight: 900; color: #fff; letter-spacing: 2px; transform-style: preserve-3d;
+    text-shadow: 0 0 30px rgba(120,120,255,0.5); opacity: 0; transform: translateZ(-600px) rotateX(90deg); animation: letterIn 0.9s cubic-bezier(.2,.8,.2,1) forwards; }
+  @keyframes letterIn { 0%{opacity:0;transform:translateZ(-600px) rotateX(90deg) translateY(40px);filter:blur(10px)} 100%{opacity:1;transform:translateZ(0) rotateX(0) translateY(0);filter:blur(0)} }
+  .intro-sweep { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(100deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%);
     transform: translateX(-100%) skewX(-15deg); animation: introSweep 1.4s ease 1.8s forwards; }
   @keyframes introSweep { to { transform: translateX(100%) skewX(-15deg); } }
-  .intro-sub { position: absolute; bottom: 32%; left: 0; right: 0; text-align: center; color: var(--muted);
-    letter-spacing: 8px; text-transform: uppercase; font-size: 0.8rem; opacity: 0; animation: fadeIn 1s ease 2.6s forwards; }
+  .intro-sub { position: absolute; bottom: 32%; left: 0; right: 0; text-align: center; color: var(--muted); letter-spacing: 8px; text-transform: uppercase; font-size: 0.8rem; opacity: 0; animation: fadeIn 1s ease 2.6s forwards; }
   @keyframes fadeIn { to { opacity: 1; } }
 
   /* ===== NAV ===== */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between;
-    align-items: center; padding: 18px 6vw; background: rgba(6,6,14,0.6); backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.06); transition: padding .3s, background .3s; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 6vw; background: rgba(6,6,14,0.6); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); transition: padding .3s, background .3s; }
   nav.scrolled { padding: 12px 6vw; background: rgba(6,6,14,0.92); }
-  .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: 1px; background: var(--grad);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: 1px; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    transition: transform .4s; transform-style: preserve-3d; cursor: pointer; }
+  .logo:hover { transform: rotateY(360deg); }
   nav ul { display: flex; gap: 28px; list-style: none; }
   nav a { color: var(--muted); text-decoration: none; font-size: 0.95rem; transition: .3s; }
   nav a:hover { color: var(--text); }
@@ -73,63 +62,86 @@
   /* ===== HERO ===== */
   #hero { position: relative; height: 100vh; overflow: hidden; }
   #scene { position: absolute; inset: 0; z-index: 0; }
-  #hero-overlay { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; pointer-events: none; text-align: center; }
-  #title { color: #fff; font-weight: 800; font-size: clamp(2.6rem, 11vw, 7rem); letter-spacing: 10px;
-    opacity: 0; transform: translateY(24px); transition: opacity 1.6s ease, transform 1.6s ease, letter-spacing 1.6s ease;
-    text-shadow: 0 0 40px rgba(120,120,255,0.35); }
+  #cube-scene { position: absolute; top: 14%; right: 8%; width: 120px; height: 120px; z-index: 2; perspective: 600px; pointer-events: none; opacity: .9; }
+  .cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: spinCube 9s linear infinite; }
+  .cube div { position: absolute; width: 120px; height: 120px; border: 1px solid var(--accent2); background: rgba(108,92,231,0.08); box-shadow: inset 0 0 30px rgba(0,210,255,0.25); }
+  .cube .f { transform: translateZ(60px); } .cube .b { transform: rotateY(180deg) translateZ(60px); }
+  .cube .r { transform: rotateY(90deg) translateZ(60px); } .cube .l { transform: rotateY(-90deg) translateZ(60px); }
+  .cube .t { transform: rotateX(90deg) translateZ(60px); } .cube .d { transform: rotateX(-90deg) translateZ(60px); }
+  @keyframes spinCube { from { transform: rotateX(0) rotateY(0); } to { transform: rotateX(360deg) rotateY(360deg); } }
+  #hero-overlay { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center; }
+  #title { color: #fff; font-weight: 800; font-size: clamp(2.6rem,11vw,7rem); letter-spacing: 10px; opacity: 0; transform: translateY(24px);
+    transition: opacity 1.6s ease, transform 1.6s ease, letter-spacing 1.6s ease; text-shadow: 0 0 40px rgba(120,120,255,0.35); }
   #title.show { opacity: 1; transform: translateY(0); letter-spacing: 14px; }
-  #subtitle { margin-top: 22px; font-size: clamp(0.8rem, 2.4vw, 1.1rem); letter-spacing: 6px; text-transform: uppercase;
-    background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    opacity: 0; transition: opacity 1.6s ease 0.4s; }
-  #subtitle.show { opacity: 1; }
+  #typed { margin-top: 22px; font-size: clamp(0.9rem,2.6vw,1.3rem); letter-spacing: 4px; color: var(--accent2); min-height: 1.4em; opacity: 0; transition: opacity 1.2s ease 0.4s; }
+  #typed.show { opacity: 1; }
+  #typed .cursor { animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
   #hero-cta { margin-top: 40px; display: flex; gap: 16px; opacity: 0; transition: opacity 1.2s ease 1s; pointer-events: none; }
   #hero-cta.show { opacity: 1; pointer-events: all; }
-  #hint { position: absolute; bottom: 36px; left: 0; right: 0; z-index: 2; text-align: center; pointer-events: none;
-    color: rgba(255,255,255,0.5); font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase;
-    animation: hintPulse 2s ease-in-out infinite; transition: opacity 1s ease; }
+  #hint { position: absolute; bottom: 36px; left: 0; right: 0; z-index: 3; text-align: center; pointer-events: none; color: rgba(255,255,255,0.5);
+    font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; animation: hintPulse 2s ease-in-out infinite; transition: opacity 1s ease; }
   #hint.hide { opacity: 0; }
   @keyframes hintPulse { 0%,100%{opacity:0.3} 50%{opacity:0.7} }
 
   /* ===== BUTTONS / SECTIONS ===== */
-  .btn { display: inline-block; padding: 14px 32px; border-radius: 40px; background: var(--grad); color: #fff;
-    text-decoration: none; font-weight: 600; transition: transform .3s, box-shadow .3s; box-shadow: 0 8px 30px rgba(108,92,231,0.4); }
+  .btn { display: inline-block; padding: 14px 32px; border-radius: 40px; background: var(--grad); color: #fff; text-decoration: none; font-weight: 600;
+    transition: transform .3s, box-shadow .3s; box-shadow: 0 8px 30px rgba(108,92,231,0.4); transform-style: preserve-3d; }
   .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,210,255,0.5); }
+  .btn:active { transform: translateY(2px) translateZ(-6px) rotateX(12deg); }
   .btn.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.2); box-shadow: none; }
   .btn.ghost:hover { border-color: var(--accent2); }
   section { padding: 100px 6vw; position: relative; z-index: 1; background: var(--bg); }
-  .section-title { text-align: center; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; margin-bottom: 12px; }
+  .section-title { text-align: center; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; margin-bottom: 12px; transform-style: preserve-3d; }
   .section-sub { text-align: center; color: var(--muted); margin-bottom: 60px; }
 
   /* ===== SCROLL REVEAL ===== */
   .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
+  .section-title.reveal { transform: perspective(800px) rotateX(35deg) translateY(40px); transform-origin: top; }
+  .section-title.reveal.visible { transform: perspective(800px) rotateX(0) translateY(0); }
 
   /* ===== STATS ===== */
   #stats { background: linear-gradient(180deg, var(--bg), var(--bg2)); }
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; text-align: center; }
-  .stat h3 { font-size: 3rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; text-align: center; perspective: 1200px; }
+  .stat h3 { font-size: 3rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; transform-style: preserve-3d; }
+  .stat h3.flip3d { animation: coinFlip 1s ease; }
+  @keyframes coinFlip { 0% { transform: rotateY(0); } 100% { transform: rotateY(720deg); } }
   .stat p { color: var(--muted); margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; font-size: .85rem; }
 
-  /* ===== SERVICES ===== */
+  /* ===== SERVICES (3D flip) ===== */
   .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 28px; max-width: 1200px; margin: 0 auto; }
-  .service { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 34px; transition: .4s; }
-  .service:hover { transform: translateY(-8px); border-color: var(--accent); }
-  .service .ico { font-size: 2.4rem; margin-bottom: 16px; }
+  .service { perspective: 1000px; }
+  .service .flip { position: relative; transform-style: preserve-3d; transition: transform .8s cubic-bezier(.2,.8,.2,1); min-height: 230px; }
+  .service:hover .flip { transform: rotateY(180deg); }
+  .service .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 18px; padding: 34px; background: var(--card);
+    border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: center; }
+  .service .back { transform: rotateY(180deg); background: linear-gradient(135deg, rgba(108,92,231,0.2), rgba(0,210,255,0.15)); }
+  .service .ico { font-size: 2.4rem; margin-bottom: 16px; display: inline-block; transform-style: preserve-3d; animation: float3d 4s ease-in-out infinite; }
+  @keyframes float3d { 0%,100%{transform:translateY(0) rotateY(0)} 50%{transform:translateY(-12px) rotateY(180deg)} }
   .service h3 { font-size: 1.2rem; margin-bottom: 10px; }
   .service p { color: var(--muted); font-size: .95rem; line-height: 1.6; }
 
+  /* ===== PROCESS TIMELINE (3D) ===== */
+  .process { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 28px; max-width: 1100px; margin: 0 auto; perspective: 1000px; }
+  .step { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 34px 26px; text-align: center;
+    transition: transform .5s; transform-style: preserve-3d; }
+  .step:hover { transform: rotateX(8deg) rotateY(-8deg) translateY(-6px); }
+  .step .num { font-size: 2.4rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .step h3 { margin: 10px 0; font-size: 1.1rem; }
+  .step p { color: var(--muted); font-size: .9rem; line-height: 1.5; }
+
   /* ===== PACKAGES ===== */
-  .packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 28px; max-width: 1320px; margin: 0 auto; }
-  .pkg { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px 30px;
-    text-align: center; transition: transform .4s, border-color .4s, box-shadow .4s; position: relative; overflow: hidden; }
-  .pkg:hover { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 20px 50px rgba(108,92,231,0.25); }
+  .packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 28px; max-width: 1320px; margin: 0 auto; perspective: 1200px; }
+  .pkg { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px 30px; text-align: center;
+    transition: transform .4s, border-color .4s, box-shadow .4s; position: relative; overflow: hidden; transform-style: preserve-3d; will-change: transform; }
+  .pkg:hover { border-color: var(--accent); box-shadow: 0 20px 50px rgba(108,92,231,0.25); }
   .pkg.featured { border-color: var(--accent2); box-shadow: 0 0 40px rgba(0,210,255,0.15); }
-  .pkg .badge { position: absolute; top: 16px; right: -34px; transform: rotate(45deg); background: var(--grad);
-    color: #fff; font-size: .7rem; padding: 4px 40px; font-weight: 700; }
+  .pkg .badge { position: absolute; top: 16px; right: -34px; transform: rotate(45deg); background: var(--grad); color: #fff; font-size: .7rem;
+    padding: 4px 40px; font-weight: 700; transform-style: preserve-3d; animation: badgeSpin 5s linear infinite; }
+  @keyframes badgeSpin { 0%,80%{transform:rotate(45deg) rotateY(0)} 90%{transform:rotate(45deg) rotateY(180deg)} 100%{transform:rotate(45deg) rotateY(360deg)} }
   .pkg h3 { font-size: 1.3rem; margin-bottom: 10px; }
-  .pkg .price { font-size: 2.4rem; font-weight: 800; margin: 14px 0; background: var(--grad);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .pkg .price { font-size: 2.4rem; font-weight: 800; margin: 14px 0; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .pkg .price small { font-size: .9rem; color: var(--muted); -webkit-text-fill-color: var(--muted); }
   .pkg ul { list-style: none; margin: 20px 0 28px; }
   .pkg ul li { color: var(--muted); padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: .9rem; }
@@ -139,6 +151,16 @@
   /* ===== ABOUT ===== */
   .about { max-width: 800px; margin: 0 auto; text-align: center; color: var(--muted); font-size: 1.1rem; line-height: 1.8; }
 
+  /* ===== TESTIMONIALS (3D) ===== */
+  .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 28px; max-width: 1100px; margin: 0 auto; perspective: 1200px; }
+  .testi { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 32px; transition: transform .5s; transform-style: preserve-3d; }
+  .testi:hover { transform: rotateY(10deg) translateZ(20px); }
+  .testi p { color: var(--muted); font-style: italic; line-height: 1.7; margin-bottom: 18px; }
+  .testi .who { display: flex; align-items: center; gap: 12px; }
+  .testi .av { width: 42px; height: 42px; border-radius: 50%; background: var(--grad); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; }
+  .testi .who b { display: block; } .testi .who span { color: var(--muted); font-size: .8rem; }
+  .stars { color: #ffd25e; margin-bottom: 14px; letter-spacing: 2px; }
+
   /* ===== FAQ ===== */
   .faq { max-width: 800px; margin: 0 auto; }
   .faq-item { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; margin-bottom: 14px; overflow: hidden; }
@@ -146,10 +168,16 @@
   .faq-q span.icon { transition: transform .3s; color: var(--accent2); }
   .faq-item.open .faq-q span.icon { transform: rotate(45deg); }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .4s ease; color: var(--muted); padding: 0 24px; }
-  .faq-item.open .faq-a { max-height: 200px; padding: 0 24px 20px; }
+  .faq-item.open .faq-a { max-height: 220px; padding: 0 24px 20px; }
 
   /* ===== CONTACT ===== */
-  .contact-box { max-width: 600px; margin: 0 auto; text-align: center; }
+  #contact { overflow: hidden; }
+  .ring3d { position: absolute; top: 50%; left: 50%; width: 460px; height: 460px; margin: -230px 0 0 -230px; border: 2px solid rgba(0,210,255,0.18);
+    border-radius: 50%; transform-style: preserve-3d; animation: ringSpin 16s linear infinite; pointer-events: none; z-index: 0; }
+  .ring3d::before, .ring3d::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid rgba(108,92,231,0.15); }
+  .ring3d::before { transform: rotateX(70deg); } .ring3d::after { transform: rotateY(70deg); }
+  @keyframes ringSpin { from { transform: rotateX(60deg) rotateZ(0); } to { transform: rotateX(60deg) rotateZ(360deg); } }
+  .contact-box { max-width: 600px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
   .contact-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
   .contact-card { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px 40px; transition: .3s; }
   .contact-card:hover { border-color: var(--accent); transform: translateY(-5px); }
@@ -158,51 +186,45 @@
 
   footer { text-align: center; padding: 40px; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); font-size: .9rem; position: relative; z-index: 1; background: var(--bg); }
 
-  /* ===== BACK TO TOP ===== */
-  #top-btn { position: fixed; bottom: 26px; left: 26px; z-index: 1000; width: 48px; height: 48px; border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.15); background: rgba(12,14,22,0.8); color: var(--accent2); cursor: pointer;
-    font-size: 1.2rem; opacity: 0; pointer-events: none; transition: .3s; }
+  #top-btn { position: fixed; bottom: 26px; left: 26px; z-index: 1000; width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(12,14,22,0.8); color: var(--accent2); cursor: pointer; font-size: 1.2rem; opacity: 0; pointer-events: none; transition: .3s; }
   #top-btn.show { opacity: 1; pointer-events: all; }
   #top-btn:hover { background: var(--accent); color: #fff; }
 
   /* ===== AI CHATBOT ===== */
-  #chat-toggle { position: fixed; bottom: 26px; right: 26px; z-index: 1000; width: 64px; height: 64px; border-radius: 50%;
-    border: none; cursor: pointer; background: linear-gradient(135deg, var(--accent), var(--accent2));
-    box-shadow: 0 8px 30px rgba(108,92,231,0.5); display: flex; align-items: center; justify-content: center;
-    font-size: 1.6rem; transition: transform .3s; animation: pulse 2.5s infinite; }
-  #chat-toggle:hover { transform: scale(1.1); }
+  #chat-toggle { position: fixed; bottom: 26px; right: 26px; z-index: 1000; width: 64px; height: 64px; border-radius: 50%; border: none; cursor: pointer;
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: 0 8px 30px rgba(108,92,231,0.5); display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; transition: transform .3s; animation: pulse 2.5s infinite; transform-style: preserve-3d; }
+  #chat-toggle:hover { animation: botSpin .8s ease; }
+  @keyframes botSpin { 0% { transform: scale(1.1) rotateY(0); } 100% { transform: scale(1.1) rotateY(360deg); } }
   @keyframes pulse { 0%,100% { box-shadow: 0 8px 30px rgba(108,92,231,0.5); } 50% { box-shadow: 0 8px 40px rgba(0,210,255,0.7); } }
-  #chat-window { position: fixed; bottom: 100px; right: 26px; z-index: 1000; width: 360px; max-width: calc(100vw - 40px);
-    height: 480px; max-height: 70vh; background: #0c0e16; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
-    overflow: hidden; display: flex; flex-direction: column; transform: translateY(20px) scale(0.95); opacity: 0;
-    pointer-events: none; transition: .3s; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+  #chat-window { position: fixed; bottom: 100px; right: 26px; z-index: 1000; width: 360px; max-width: calc(100vw - 40px); height: 480px; max-height: 70vh;
+    background: #0c0e16; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
+    transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; transition: .3s; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
   #chat-window.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
   .chat-head { padding: 18px 20px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; gap: 12px; }
   .chat-head .avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-  .chat-head h4 { font-size: 1rem; color: #fff; }
-  .chat-head p { font-size: .75rem; color: rgba(255,255,255,0.8); }
+  .chat-head h4 { font-size: 1rem; color: #fff; } .chat-head p { font-size: .75rem; color: rgba(255,255,255,0.8); }
   .chat-body { flex: 1; padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
   .msg { max-width: 80%; padding: 10px 14px; border-radius: 14px; font-size: .9rem; line-height: 1.4; }
   .msg.bot { background: rgba(255,255,255,0.06); align-self: flex-start; border-bottom-left-radius: 4px; }
   .msg.user { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
   .quick-replies { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 18px 10px; }
-  .quick-replies button { background: rgba(108,92,231,0.15); border: 1px solid var(--accent); color: var(--accent2);
-    padding: 6px 12px; border-radius: 20px; font-size: .8rem; cursor: pointer; transition: .2s; }
+  .quick-replies button { background: rgba(108,92,231,0.15); border: 1px solid var(--accent); color: var(--accent2); padding: 6px 12px; border-radius: 20px; font-size: .8rem; cursor: pointer; transition: .2s; }
   .quick-replies button:hover { background: var(--accent); color: #fff; }
   .chat-input { display: flex; padding: 12px; border-top: 1px solid rgba(255,255,255,0.08); gap: 8px; }
-  .chat-input input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
-    padding: 10px 16px; color: var(--text); outline: none; font-size: .9rem; }
-  .chat-input button { background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; width: 42px; height: 42px;
-    border-radius: 50%; color: #fff; cursor: pointer; font-size: 1.1rem; }
+  .chat-input input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 10px 16px; color: var(--text); outline: none; font-size: .9rem; }
+  .chat-input button { background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; width: 42px; height: 42px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 1.1rem; }
 
-  @media(max-width: 768px){ nav ul { display: none; } #cursor-glow { display: none; } }
+  @media(max-width: 768px){ nav ul { display: none; } #cursor-glow, #cube-scene { display: none; } }
 </style>
 </head>
 <body>
 
+<div id="grid-bg"></div>
 <div id="cursor-glow"></div>
 
-<!-- 3D INTRO OVERLAY -->
+<!-- 3D INTRO -->
 <div id="intro">
   <div class="intro-3d" id="intro3d"></div>
   <div class="intro-sweep"></div>
@@ -224,9 +246,10 @@
 <!-- HERO -->
 <section id="hero">
   <div id="scene"></div>
+  <div id="cube-scene"><div class="cube"><div class="f"></div><div class="b"></div><div class="r"></div><div class="l"></div><div class="t"></div><div class="d"></div></div></div>
   <div id="hero-overlay">
     <div id="title">WEBZINO</div>
-    <div id="subtitle">Premium Digital Experiences</div>
+    <div id="typed"></div>
     <div id="hero-cta">
       <a href="#packages" class="btn">View Packages</a>
       <a href="#contact" class="btn ghost">Contact</a>
@@ -250,10 +273,34 @@
   <h2 class="section-title reveal">What I Do</h2>
   <p class="section-sub reveal">End-to-end web solutions for your brand</p>
   <div class="services-grid">
-    <div class="service reveal"><div class="ico">🎨</div><h3>Web Design</h3><p>Modern, responsive, pixel-perfect designs that captivate your audience on every device.</p></div>
-    <div class="service reveal"><div class="ico">🧊</div><h3>3D Experiences</h3><p>Immersive interactive 3D websites built with Three.js that make your brand unforgettable.</p></div>
-    <div class="service reveal"><div class="ico">🤖</div><h3>AI Chatbots</h3><p>Smart AI chatbot agents that engage visitors 24/7 and convert them into customers.</p></div>
-    <div class="service reveal"><div class="ico">🚀</div><h3>SEO & Speed</h3><p>Lightning-fast, SEO-optimized sites that rank higher and load in the blink of an eye.</p></div>
+    <div class="service reveal"><div class="flip">
+      <div class="face front"><div class="ico">🎨</div><h3>Web Design</h3><p>Modern, responsive, pixel-perfect designs.</p></div>
+      <div class="face back"><h3>Web Design</h3><p>Custom layouts crafted to match your brand identity and convert visitors.</p></div>
+    </div></div>
+    <div class="service reveal"><div class="flip">
+      <div class="face front"><div class="ico">🧊</div><h3>3D Experiences</h3><p>Immersive interactive 3D websites.</p></div>
+      <div class="face back"><h3>3D Experiences</h3><p>Three.js powered scenes that make your brand unforgettable.</p></div>
+    </div></div>
+    <div class="service reveal"><div class="flip">
+      <div class="face front"><div class="ico">🤖</div><h3>AI Chatbots</h3><p>Smart agents that engage 24/7.</p></div>
+      <div class="face back"><h3>AI Chatbots</h3><p>Convert visitors into customers with intelligent automated chat.</p></div>
+    </div></div>
+    <div class="service reveal"><div class="flip">
+      <div class="face front"><div class="ico">🚀</div><h3>SEO & Speed</h3><p>Fast, SEO-optimized sites.</p></div>
+      <div class="face back"><h3>SEO & Speed</h3><p>Rank higher and load in the blink of an eye.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <h2 class="section-title reveal">How It Works</h2>
+  <p class="section-sub reveal">A simple, transparent process</p>
+  <div class="process">
+    <div class="step reveal"><div class="num">01</div><h3>Discuss</h3><p>We chat on WhatsApp about your vision, goals, and budget.</p></div>
+    <div class="step reveal"><div class="num">02</div><h3>Design</h3><p>I craft a custom design tailored to your brand.</p></div>
+    <div class="step reveal"><div class="num">03</div><h3>Develop</h3><p>Your site is built, animated, and optimized to perfection.</p></div>
+    <div class="step reveal"><div class="num">04</div><h3>Deliver</h3><p>I launch your site live and hand over the keys.</p></div>
   </div>
 </section>
 
@@ -265,12 +312,7 @@
     <div class="pkg reveal">
       <h3>Basic</h3>
       <div class="price">₹4,999</div>
-      <ul>
-        <li class="hl">Free Domain Included</li>
-        <li>Mobile Responsive</li>
-        <li>Basic SEO Setup</li>
-        <li>1 Revision</li>
-      </ul>
+      <ul><li class="hl">Free Domain Included</li><li>Mobile Responsive</li><li>Basic SEO Setup</li><li>1 Revision</li></ul>
       <p class="note">+ ₹1,000 for a .in domain</p>
       <a href="#contact" class="btn">Get Started</a>
     </div>
@@ -278,51 +320,26 @@
       <div class="badge">POPULAR</div>
       <h3>Pro</h3>
       <div class="price">₹6,999</div>
-      <ul>
-        <li class="hl">Free Domain Included</li>
-        <li>Animations & Effects</li>
-        <li>Advanced SEO</li>
-        <li>3 Revisions</li>
-      </ul>
+      <ul><li class="hl">Free Domain Included</li><li>Animations & Effects</li><li>Advanced SEO</li><li>3 Revisions</li></ul>
       <p class="note">+ ₹1,000 for a .in domain</p>
       <a href="#contact" class="btn">Get Started</a>
     </div>
     <div class="pkg reveal">
       <h3>Premium</h3>
       <div class="price">₹9,999</div>
-      <ul>
-        <li class="hl">Free AI Domain Included</li>
-        <li class="hl">AI Chatbot Agent</li>
-        <li>1 Week Free Managing</li>
-        <li>Animations & Effects</li>
-        <li>Advanced SEO</li>
-        <li>3 Revisions</li>
-      </ul>
+      <ul><li class="hl">Free AI Domain Included</li><li class="hl">AI Chatbot Agent</li><li>1 Week Free Managing</li><li>Animations & Effects</li><li>Advanced SEO</li><li>3 Revisions</li></ul>
       <a href="#contact" class="btn">Get Started</a>
     </div>
     <div class="pkg reveal">
       <h3>Monthly Managing</h3>
       <div class="price">₹999<small>/mo</small></div>
-      <ul>
-        <li>Website Maintenance</li>
-        <li>Content Updates</li>
-        <li>Security Monitoring</li>
-        <li>Priority Support</li>
-      </ul>
+      <ul><li>Website Maintenance</li><li>Content Updates</li><li>Security Monitoring</li><li>Priority Support</li></ul>
       <a href="#contact" class="btn">Subscribe</a>
     </div>
     <div class="pkg reveal">
       <h3>3D Elite</h3>
       <div class="price">₹12,999</div>
-      <ul>
-        <li class="hl">Free AI Domain Included</li>
-        <li>Full 3D Website</li>
-        <li>Custom 3D Models</li>
-        <li class="hl">AI Chatbot Agent</li>
-        <li>2 Weeks Free Managing</li>
-        <li>Premium Animations</li>
-        <li>5 Revisions</li>
-      </ul>
+      <ul><li class="hl">Free AI Domain Included</li><li>Full 3D Website</li><li>Custom 3D Models</li><li class="hl">AI Chatbot Agent</li><li>2 Weeks Free Managing</li><li>Premium Animations</li><li>5 Revisions</li></ul>
       <a href="#contact" class="btn">Go Elite</a>
     </div>
   </div>
@@ -339,13 +356,24 @@
   </div>
 </section>
 
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <h2 class="section-title reveal">What Clients Say</h2>
+  <p class="section-sub reveal">Real results, happy clients</p>
+  <div class="testi-grid">
+    <div class="testi reveal"><div class="stars">★★★★★</div><p>"Webzino built me a stunning 3D website that doubled my enquiries. Incredible work!"</p><div class="who"><div class="av">R</div><div><b>Rahul S.</b><span>Startup Founder</span></div></div></div>
+    <div class="testi reveal"><div class="stars">★★★★★</div><p>"The AI chatbot handles my customer questions 24/7. Best investment for my business."</p><div class="who"><div class="av">P</div><div><b>Priya M.</b><span>Boutique Owner</span></div></div></div>
+    <div class="testi reveal"><div class="stars">★★★★★</div><p>"Fast, professional, and creative. My site looks like a million bucks. Highly recommend!"</p><div class="who"><div class="av">A</div><div><b>Arjun K.</b><span>Fitness Coach</span></div></div></div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq">
   <h2 class="section-title reveal">Frequently Asked Questions</h2>
   <p class="section-sub reveal">Everything you need to know</p>
   <div class="faq">
     <div class="faq-item reveal"><div class="faq-q">Do I get a free domain? <span class="icon">+</span></div><div class="faq-a">Yes! Basic and Pro include a free domain, with a .in domain available for ₹1,000 extra. Premium and 3D Elite include a free AI domain.</div></div>
-    <div class="faq-item reveal"><div class="faq-q">What is the AI Chatbot Agent? <span class="icon">+</span></div><div class="faq-a">It's a smart assistant that chats with your visitors 24/7, answers questions, and helps convert them into customers. Included in Premium and 3D Elite.</div></div>
+    <div class="faq-item reveal"><div class="faq-q">What is the AI Chatbot Agent? <span class="icon">+</span></div><div class="faq-a">A smart assistant that chats with your visitors 24/7, answers questions, and helps convert them into customers. Included in Premium and 3D Elite.</div></div>
     <div class="faq-item reveal"><div class="faq-q">How long does a project take? <span class="icon">+</span></div><div class="faq-a">Basic sites take a few days; 3D Elite projects take longer due to custom work. Message us on WhatsApp for an exact timeline.</div></div>
     <div class="faq-item reveal"><div class="faq-q">Do you offer ongoing support? <span class="icon">+</span></div><div class="faq-a">Yes! Premium includes 1 week free managing, 3D Elite includes 2 weeks, and our Monthly Managing plan keeps your site updated and secure.</div></div>
   </div>
@@ -353,202 +381,149 @@
 
 <!-- CONTACT -->
 <section id="contact">
+  <div class="ring3d"></div>
   <h2 class="section-title reveal">Let's Work Together</h2>
   <p class="section-sub reveal">Reach out and let's build something great</p>
   <div class="contact-box reveal">
     <div class="contact-grid">
-      <div class="contact-card">
-        <span>WhatsApp</span>
-        <a href="https://wa.me/917416747034" target="_blank" rel="noopener">+91 74167 47034</a>
-      </div>
-      <div class="contact-card">
-        <span>Email</span>
-        <a href="mailto:xentrixballer@gmail.com">xentrixballer@gmail.com</a>
-      </div>
+      <div class="contact-card"><span>WhatsApp</span><a href="https://wa.me/917416747034" target="_blank" rel="noopener">+91 74167 47034</a></div>
+      <div class="contact-card"><span>Email</span><a href="mailto:xentrixballer@gmail.com">xentrixballer@gmail.com</a></div>
     </div>
   </div>
 </section>
 
 <footer>© 2026 Webzino Studio · Designed & Developed by Webzino</footer>
 
-<!-- BACK TO TOP -->
 <button id="top-btn" aria-label="Back to top">↑</button>
 
 <!-- AI CHATBOT -->
 <button id="chat-toggle" aria-label="Open chat">🤖</button>
 <div id="chat-window">
-  <div class="chat-head">
-    <div class="avatar">🤖</div>
-    <div><h4>Webzino AI Assistant</h4><p>● Online · Ask me anything</p></div>
-  </div>
+  <div class="chat-head"><div class="avatar">🤖</div><div><h4>Webzino AI Assistant</h4><p>● Online · Ask me anything</p></div></div>
   <div class="chat-body" id="chat-body"></div>
   <div class="quick-replies" id="quick-replies"></div>
-  <div class="chat-input">
-    <input type="text" id="chat-input" placeholder="Type your message...">
-    <button id="chat-send">➤</button>
-  </div>
+  <div class="chat-input"><input type="text" id="chat-input" placeholder="Type your message..."><button id="chat-send">➤</button></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* ===== 3D INTRO SEQUENCE ===== */
+/* ===== 3D INTRO ===== */
 (function () {
   const wrap = document.getElementById('intro3d');
   'WEBZINO'.split('').forEach((ch, i) => {
-    const span = document.createElement('span');
-    span.className = 'intro-letter'; span.textContent = ch;
-    span.style.animationDelay = (0.2 + i * 0.12) + 's';
-    wrap.appendChild(span);
+    const span = document.createElement('span'); span.className = 'intro-letter'; span.textContent = ch;
+    span.style.animationDelay = (0.2 + i * 0.12) + 's'; wrap.appendChild(span);
   });
-  window.addEventListener('load', () => {
-    setTimeout(() => document.getElementById('intro').classList.add('hide'), 4200);
-  });
+  window.addEventListener('load', () => { setTimeout(() => document.getElementById('intro').classList.add('hide'), 4200); });
 })();
 
-/* ===== INTERACTIVE PARTICLE SPHERE ===== */
+/* ===== PARTICLE SPHERE ===== */
 (function () {
   const PARTICLE_COUNT = 3500, SPHERE_RADIUS = 2.4;
-  const container = document.getElementById('scene');
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  container.appendChild(renderer.domElement);
-
+  document.getElementById('scene').appendChild(renderer.domElement);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.z = 6;
-
-  const home = new Float32Array(PARTICLE_COUNT * 3), start = new Float32Array(PARTICLE_COUNT * 3);
-  const current = new Float32Array(PARTICLE_COUNT * 3), velocity = new Float32Array(PARTICLE_COUNT * 3);
-  const colors = new Float32Array(PARTICLE_COUNT * 3); const color = new THREE.Color();
-
+  const home = new Float32Array(PARTICLE_COUNT*3), start = new Float32Array(PARTICLE_COUNT*3);
+  const current = new Float32Array(PARTICLE_COUNT*3), velocity = new Float32Array(PARTICLE_COUNT*3);
+  const colors = new Float32Array(PARTICLE_COUNT*3); const color = new THREE.Color();
   for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const i3 = i * 3, t = i / PARTICLE_COUNT;
-    const phi = Math.acos(1 - 2 * t), theta = Math.PI * (1 + Math.sqrt(5)) * i;
-    const r = SPHERE_RADIUS * (0.92 + Math.random() * 0.08);
-    home[i3] = r * Math.sin(phi) * Math.cos(theta); home[i3+1] = r * Math.sin(phi) * Math.sin(theta); home[i3+2] = r * Math.cos(phi);
-    const sr = 14 + Math.random() * 10, sp = Math.acos(2 * Math.random() - 1), st = Math.random() * Math.PI * 2;
-    start[i3] = sr * Math.sin(sp) * Math.cos(st); start[i3+1] = sr * Math.sin(sp) * Math.sin(st); start[i3+2] = sr * Math.cos(sp);
-    current[i3] = start[i3]; current[i3+1] = start[i3+1]; current[i3+2] = start[i3+2];
-    const hue = 0.62 + (1 - t) * 0.25; color.setHSL(hue, 0.85, 0.6);
-    colors[i3] = color.r; colors[i3+1] = color.g; colors[i3+2] = color.b;
+    const i3 = i*3, t = i/PARTICLE_COUNT;
+    const phi = Math.acos(1-2*t), theta = Math.PI*(1+Math.sqrt(5))*i, r = SPHERE_RADIUS*(0.92+Math.random()*0.08);
+    home[i3]=r*Math.sin(phi)*Math.cos(theta); home[i3+1]=r*Math.sin(phi)*Math.sin(theta); home[i3+2]=r*Math.cos(phi);
+    const sr=14+Math.random()*10, sp=Math.acos(2*Math.random()-1), st=Math.random()*Math.PI*2;
+    start[i3]=sr*Math.sin(sp)*Math.cos(st); start[i3+1]=sr*Math.sin(sp)*Math.sin(st); start[i3+2]=sr*Math.cos(sp);
+    current[i3]=start[i3]; current[i3+1]=start[i3+1]; current[i3+2]=start[i3+2];
+    const hue=0.62+(1-t)*0.25; color.setHSL(hue,0.85,0.6); colors[i3]=color.r; colors[i3+1]=color.g; colors[i3+2]=color.b;
   }
-
   const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.BufferAttribute(current, 3));
-  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  const material = new THREE.PointsMaterial({ size: 0.028, sizeAttenuation: true, vertexColors: true,
-    transparent: true, opacity: 0.92, depthWrite: false, blending: THREE.AdditiveBlending });
+  geometry.setAttribute('position', new THREE.BufferAttribute(current,3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors,3));
+  const material = new THREE.PointsMaterial({ size:0.028, sizeAttenuation:true, vertexColors:true, transparent:true, opacity:0.92, depthWrite:false, blending:THREE.AdditiveBlending });
   const points = new THREE.Points(geometry, material); scene.add(points);
-
-  const pointer = new THREE.Vector2(0, 0), pointer3D = new THREE.Vector3();
-  let pushRadius = 1.4, pushForce = 0.6, targetRadius = 1.4, targetForce = 0.6;
-  function setPointer(x, y) { pointer.x = (x / window.innerWidth) * 2 - 1; pointer.y = -(y / window.innerHeight) * 2 + 1; }
-  function updatePointer3D() {
-    pointer3D.set(pointer.x, pointer.y, 0.5).unproject(camera);
-    const dir = pointer3D.sub(camera.position).normalize();
-    const dist = -camera.position.z / dir.z;
-    pointer3D.copy(camera.position).add(dir.multiplyScalar(dist));
-  }
-  window.addEventListener('mousemove', e => setPointer(e.clientX, e.clientY));
-  window.addEventListener('mousedown', () => { targetRadius = 3.2; targetForce = 2.4; });
-  window.addEventListener('mouseup', () => { targetRadius = 1.4; targetForce = 0.6; });
-  window.addEventListener('touchstart', e => { if (e.touches[0]) setPointer(e.touches[0].clientX, e.touches[0].clientY); targetRadius = 3.2; targetForce = 2.4; }, { passive: true });
-  window.addEventListener('touchmove', e => { e.preventDefault(); if (e.touches[0]) setPointer(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
-  window.addEventListener('touchend', () => { targetRadius = 1.4; targetForce = 0.6; });
-
+  const pointer = new THREE.Vector2(0,0), pointer3D = new THREE.Vector3();
+  let pushRadius=1.4, pushForce=0.6, targetRadius=1.4, targetForce=0.6;
+  function setPointer(x,y){ pointer.x=(x/window.innerWidth)*2-1; pointer.y=-(y/window.innerHeight)*2+1; }
+  function updatePointer3D(){ pointer3D.set(pointer.x,pointer.y,0.5).unproject(camera); const dir=pointer3D.sub(camera.position).normalize(); const dist=-camera.position.z/dir.z; pointer3D.copy(camera.position).add(dir.multiplyScalar(dist)); }
+  window.addEventListener('mousemove', e => setPointer(e.clientX,e.clientY));
+  window.addEventListener('mousedown', () => { targetRadius=3.2; targetForce=2.4; });
+  window.addEventListener('mouseup', () => { targetRadius=1.4; targetForce=0.6; });
+  window.addEventListener('touchstart', e => { if(e.touches[0]) setPointer(e.touches[0].clientX,e.touches[0].clientY); targetRadius=3.2; targetForce=2.4; }, {passive:true});
+  window.addEventListener('touchmove', e => { e.preventDefault(); if(e.touches[0]) setPointer(e.touches[0].clientX,e.touches[0].clientY); }, {passive:false});
+  window.addEventListener('touchend', () => { targetRadius=1.4; targetForce=0.6; });
   const startTime = performance.now(); let textShown = false;
-  function revealText() {
-    document.getElementById('title').classList.add('show');
-    document.getElementById('subtitle').classList.add('show');
-    document.getElementById('hero-cta').classList.add('show');
-    document.getElementById('hint').classList.add('hide');
-  }
+  function revealText(){ document.getElementById('title').classList.add('show'); document.getElementById('typed').classList.add('show'); document.getElementById('hero-cta').classList.add('show'); document.getElementById('hint').classList.add('hide'); startTyping(); }
   const pos = geometry.attributes.position.array;
-  function animate() {
+  function animate(){
     requestAnimationFrame(animate);
-    const elapsed = (performance.now() - startTime) / 1000;
-    const assembly = Math.min(elapsed / 2.0, 1), ease = 1 - Math.pow(1 - assembly, 3);
-    if (!textShown && elapsed > 2.0) { textShown = true; revealText(); }
-    pushRadius += (targetRadius - pushRadius) * 0.08; pushForce += (targetForce - pushForce) * 0.08;
-    updatePointer3D();
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const i3 = i * 3;
-      const hx = start[i3] + (home[i3] - start[i3]) * ease;
-      const hy = start[i3+1] + (home[i3+1] - start[i3+1]) * ease;
-      const hz = start[i3+2] + (home[i3+2] - start[i3+2]) * ease;
-      let cx = current[i3], cy = current[i3+1], cz = current[i3+2];
-      velocity[i3] += (hx - cx) * 0.06; velocity[i3+1] += (hy - cy) * 0.06; velocity[i3+2] += (hz - cz) * 0.06;
-      if (assembly > 0.6) {
-        const dx = cx - pointer3D.x, dy = cy - pointer3D.y, dz = cz - pointer3D.z;
-        const distSq = dx*dx + dy*dy + dz*dz, radSq = pushRadius * pushRadius;
-        if (distSq < radSq) {
-          const dist = Math.sqrt(distSq) || 0.0001;
-          const strength = (1 - dist / pushRadius) * pushForce;
-          velocity[i3] += (dx / dist) * strength * 0.5;
-          velocity[i3+1] += (dy / dist) * strength * 0.5;
-          velocity[i3+2] += (dz / dist) * strength * 0.5;
-        }
+    const elapsed=(performance.now()-startTime)/1000;
+    const assembly=Math.min(elapsed/2.0,1), ease=1-Math.pow(1-assembly,3);
+    if(!textShown && elapsed>2.0){ textShown=true; revealText(); }
+    pushRadius+=(targetRadius-pushRadius)*0.08; pushForce+=(targetForce-pushForce)*0.08; updatePointer3D();
+    for(let i=0;i<PARTICLE_COUNT;i++){
+      const i3=i*3;
+      const hx=start[i3]+(home[i3]-start[i3])*ease, hy=start[i3+1]+(home[i3+1]-start[i3+1])*ease, hz=start[i3+2]+(home[i3+2]-start[i3+2])*ease;
+      let cx=current[i3], cy=current[i3+1], cz=current[i3+2];
+      velocity[i3]+=(hx-cx)*0.06; velocity[i3+1]+=(hy-cy)*0.06; velocity[i3+2]+=(hz-cz)*0.06;
+      if(assembly>0.6){
+        const dx=cx-pointer3D.x, dy=cy-pointer3D.y, dz=cz-pointer3D.z;
+        const distSq=dx*dx+dy*dy+dz*dz, radSq=pushRadius*pushRadius;
+        if(distSq<radSq){ const dist=Math.sqrt(distSq)||0.0001; const s=(1-dist/pushRadius)*pushForce;
+          velocity[i3]+=(dx/dist)*s*0.5; velocity[i3+1]+=(dy/dist)*s*0.5; velocity[i3+2]+=(dz/dist)*s*0.5; }
       }
-      velocity[i3] *= 0.86; velocity[i3+1] *= 0.86; velocity[i3+2] *= 0.86;
-      cx += velocity[i3]; cy += velocity[i3+1]; cz += velocity[i3+2];
-      current[i3] = cx; current[i3+1] = cy; current[i3+2] = cz;
-      pos[i3] = cx; pos[i3+1] = cy; pos[i3+2] = cz;
+      velocity[i3]*=0.86; velocity[i3+1]*=0.86; velocity[i3+2]*=0.86;
+      cx+=velocity[i3]; cy+=velocity[i3+1]; cz+=velocity[i3+2];
+      current[i3]=cx; current[i3+1]=cy; current[i3+2]=cz; pos[i3]=cx; pos[i3+1]=cy; pos[i3+2]=cz;
     }
-    geometry.attributes.position.needsUpdate = true;
-    points.rotation.y += 0.0016;
-    camera.position.x += (pointer.x * 1.2 - camera.position.x) * 0.04;
-    camera.position.y += (pointer.y * 1.2 - camera.position.y) * 0.04;
-    camera.lookAt(scene.position);
-    renderer.render(scene, camera);
+    geometry.attributes.position.needsUpdate=true; points.rotation.y+=0.0016;
+    camera.position.x+=(pointer.x*1.2-camera.position.x)*0.04; camera.position.y+=(pointer.y*1.2-camera.position.y)*0.04;
+    camera.lookAt(scene.position); renderer.render(scene,camera);
   }
   animate();
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  });
+  window.addEventListener('resize', () => { camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); renderer.setPixelRatio(Math.min(window.devicePixelRatio,2)); });
 })();
 
-/* ===== PREMIUM UI: cursor glow, nav, reveal, stats, faq, top button ===== */
+/* ===== TYPING EFFECT ===== */
+function startTyping() {
+  const el = document.getElementById('typed');
+  const phrases = ['Premium Web Design', '3D Interactive Websites', 'AI Chatbot Agents', 'Brands That Stand Out'];
+  let p = 0, c = 0, deleting = false;
+  function tick() {
+    const word = phrases[p];
+    el.innerHTML = word.substring(0, c) + '<span class="cursor">|</span>';
+    if (!deleting) { c++; if (c > word.length) { deleting = true; setTimeout(tick, 1400); return; } }
+    else { c--; if (c === 0) { deleting = false; p = (p + 1) % phrases.length; } }
+    setTimeout(tick, deleting ? 45 : 90);
+  }
+  tick();
+}
+
+/* ===== PREMIUM UI ===== */
 (function () {
-  // Cursor glow
   const glow = document.getElementById('cursor-glow');
-  window.addEventListener('mousemove', e => { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
-
-  // Nav shrink + back-to-top
+  window.addEventListener('mousemove', e => { glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px'; });
   const nav = document.getElementById('nav'), topBtn = document.getElementById('top-btn');
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    nav.classList.toggle('scrolled', y > 40);
-    topBtn.classList.toggle('show', y > 500);
-  });
-  topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-  // Scroll reveal
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); } });
-  }, { threshold: 0.15 });
+  window.addEventListener('scroll', () => { const y=window.scrollY; nav.classList.toggle('scrolled', y>40); topBtn.classList.toggle('show', y>500); });
+  topBtn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+  const io = new IntersectionObserver(es => { es.forEach(en => { if(en.isIntersecting){ en.target.classList.add('visible'); io.unobserve(en.target); } }); }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // Animated stat counters
-  const stats = document.querySelectorAll('.stat h3');
-  const sio = new IntersectionObserver(entries => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        const el = en.target, target = +el.dataset.count; let n = 0;
-        const step = Math.max(1, Math.round(target / 60));
-        const timer = setInterval(() => { n += step; if (n >= target) { n = target; clearInterval(timer); } el.textContent = n; }, 22);
-        sio.unobserve(el);
-      }
-    });
+  const sio = new IntersectionObserver(es => {
+    es.forEach(en => { if(en.isIntersecting){ const el=en.target, target=+el.dataset.count; let n=0; const step=Math.max(1,Math.round(target/60));
+      const timer=setInterval(()=>{ n+=step; if(n>=target){ n=target; clearInterval(timer); el.classList.add('flip3d'); } el.textContent=n; }, 22); sio.unobserve(el); } });
   }, { threshold: 0.5 });
-  stats.forEach(s => sio.observe(s));
-
-  // FAQ accordion
-  document.querySelectorAll('.faq-item .faq-q').forEach(q => {
-    q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+  document.querySelectorAll('.stat h3').forEach(s => sio.observe(s));
+  document.querySelectorAll('.faq-item .faq-q').forEach(q => q.addEventListener('click', () => q.parentElement.classList.toggle('open')));
+  // 3D tilt on package cards
+  document.querySelectorAll('.pkg').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const rx = ((e.clientY-r.top)/r.height-0.5)*-12, ry = ((e.clientX-r.left)/r.width-0.5)*12;
+      card.style.transform = `translateY(-12px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
   });
 })();
 
@@ -559,43 +534,36 @@
   const sendBtn = document.getElementById('chat-send'), quick = document.getElementById('quick-replies');
   const WA = "https://wa.me/917416747034";
   const quickOptions = ['View Packages', 'Pricing', 'Domains', 'WhatsApp'];
-
   toggle.addEventListener('click', () => {
     chatWin.classList.toggle('open');
-    if (chatWin.classList.contains('open') && body.children.length === 0) {
-      botSay("👋 Hi! I'm the Webzino AI Assistant. I can help with packages, pricing, domains, and getting in touch. What would you like to know?");
-      renderQuick();
-    }
+    if (chatWin.classList.contains('open') && body.children.length === 0) { botSay("👋 Hi! I'm the Webzino AI Assistant. Ask me about packages, pricing, domains, or getting in touch!"); renderQuick(); }
   });
-  function addMsg(text, who) { const m = document.createElement('div'); m.className = 'msg ' + who; m.innerHTML = text; body.appendChild(m); body.scrollTop = body.scrollHeight; }
-  function botSay(text) { setTimeout(() => addMsg(text, 'bot'), 400); }
-  function renderQuick() {
-    quick.innerHTML = '';
-    quickOptions.forEach(opt => { const b = document.createElement('button'); b.textContent = opt; b.onclick = () => handle(opt); quick.appendChild(b); });
-  }
-  function getReply(msg) {
+  function addMsg(text,who){ const m=document.createElement('div'); m.className='msg '+who; m.innerHTML=text; body.appendChild(m); body.scrollTop=body.scrollHeight; }
+  function botSay(text){ setTimeout(()=>addMsg(text,'bot'),400); }
+  function renderQuick(){ quick.innerHTML=''; quickOptions.forEach(opt=>{ const b=document.createElement('button'); b.textContent=opt; b.onclick=()=>handle(opt); quick.appendChild(b); }); }
+  function getReply(msg){
     const t = msg.toLowerCase();
-    if (/(hi|hello|hey|yo)\b/.test(t)) return "Hello! 👋 How can I help you today? Ask me about our packages, pricing, or domains.";
-    if (t.includes('domain')) return "🌐 Domains:<br>• <b>Basic & Pro</b>: Free domain included (+₹1,000 for a .in domain)<br>• <b>Premium & 3D Elite</b>: Free <b>AI domain</b> included!";
-    if (t.includes('package') && !t.includes('price')) return "We offer 5 packages:<br>• <b>Basic</b> – ₹4,999<br>• <b>Pro</b> – ₹6,999 (most popular)<br>• <b>Premium</b> – ₹9,999<br>• <b>Monthly Managing</b> – ₹999/mo<br>• <b>3D Elite</b> – ₹12,999";
-    if (t.includes('price') || t.includes('cost') || t.includes('pricing') || t.includes('how much')) return "Pricing:<br>• Basic: <b>₹4,999</b><br>• Pro: <b>₹6,999</b><br>• Premium: <b>₹9,999</b><br>• Monthly Managing: <b>₹999/mo</b><br>• 3D Elite: <b>₹12,999</b>";
-    if (t.includes('basic')) return "The <b>Basic</b> package (₹4,999): free domain (+₹1,000 for .in), mobile responsive, basic SEO, and 1 revision.";
-    if (t.includes('premium')) return "The <b>Premium</b> package (₹9,999): free <b>AI domain</b>, <b>AI Chatbot Agent</b>, 1 week free managing, animations, advanced SEO, and 3 revisions! 🤖";
-    if (t.includes('pro')) return "The <b>Pro</b> package (₹6,999) is most popular! Free domain (+₹1,000 for .in), animations & effects, advanced SEO, and 3 revisions.";
-    if (t.includes('monthly') || t.includes('managing') || t.includes('maintenance')) return "The <b>Monthly Managing</b> plan (₹999/mo): website maintenance, content updates, security monitoring, and priority support.";
-    if (t.includes('3d') || t.includes('elite')) return "The <b>3D Elite</b> package (₹12,999): free <b>AI domain</b>, full 3D website, custom 3D models, <b>AI Chatbot Agent</b>, 2 weeks free managing, premium animations, and 5 revisions! 🚀";
-    if (t.includes('chatbot') || t.includes('ai ') || t.includes('bot')) return "An <b>AI Chatbot Agent</b> is included in <b>Premium</b> (₹9,999) and <b>3D Elite</b> (₹12,999). It engages your visitors 24/7! 🤖";
-    if (t.includes('whatsapp') || t.includes('contact') || t.includes('reach') || t.includes('phone') || t.includes('number') || t.includes('chat')) return "💬 WhatsApp: <a href='" + WA + "' target='_blank' style='color:#00d2ff'>+91 74167 47034</a><br>📧 <a href='mailto:xentrixballer@gmail.com' style='color:#00d2ff'>xentrixballer@gmail.com</a>";
-    if (t.includes('hire') || t.includes('start') || t.includes('order') || t.includes('buy') || t.includes('book')) return "Awesome! 🎉 Message us on WhatsApp: <a href='" + WA + "' target='_blank' style='color:#00d2ff'>+91 74167 47034</a> and mention which package you want!";
-    if (t.includes('time') || t.includes('long') || t.includes('deliver')) return "Delivery depends on the package. Basic sites take a few days; 3D Elite takes longer. Message us on WhatsApp for an exact timeline!";
-    if (t.includes('thank')) return "You're welcome! 😊 Feel free to reach out anytime.";
-    if (t.includes('bye')) return "Goodbye! 👋 Contact us when you're ready.";
-    return "I'd love to help! 😊 Ask about our <b>packages</b>, <b>pricing</b>, <b>domains</b>, or tap <b>WhatsApp</b> to chat directly.";
+    if(/(hi|hello|hey|yo)\b/.test(t)) return "Hello! 👋 Ask me about our packages, pricing, or domains.";
+    if(t.includes('domain')) return "🌐 Domains:<br>• <b>Basic & Pro</b>: Free domain (+₹1,000 for .in)<br>• <b>Premium & 3D Elite</b>: Free <b>AI domain</b>!";
+    if(t.includes('package') && !t.includes('price')) return "We offer 5 packages:<br>• <b>Basic</b> – ₹4,999<br>• <b>Pro</b> – ₹6,999<br>• <b>Premium</b> – ₹9,999<br>• <b>Monthly Managing</b> – ₹999/mo<br>• <b>3D Elite</b> – ₹12,999";
+    if(t.includes('price')||t.includes('cost')||t.includes('how much')) return "Pricing:<br>• Basic: <b>₹4,999</b><br>• Pro: <b>₹6,999</b><br>• Premium: <b>₹9,999</b><br>• Monthly: <b>₹999/mo</b><br>• 3D Elite: <b>₹12,999</b>";
+    if(t.includes('basic')) return "The <b>Basic</b> package (₹4,999): free domain (+₹1,000 for .in), mobile responsive, basic SEO, 1 revision.";
+    if(t.includes('premium')) return "The <b>Premium</b> package (₹9,999): free <b>AI domain</b>, <b>AI Chatbot Agent</b>, 1 week free managing, animations, advanced SEO, 3 revisions! 🤖";
+    if(t.includes('pro')) return "The <b>Pro</b> package (₹6,999) is most popular! Free domain (+₹1,000 for .in), animations, advanced SEO, 3 revisions.";
+    if(t.includes('monthly')||t.includes('managing')||t.includes('maintenance')) return "The <b>Monthly Managing</b> plan (₹999/mo): maintenance, content updates, security monitoring, priority support.";
+    if(t.includes('3d')||t.includes('elite')) return "The <b>3D Elite</b> package (₹12,999): free <b>AI domain</b>, full 3D website, custom 3D models, <b>AI Chatbot Agent</b>, 2 weeks free managing, premium animations, 5 revisions! 🚀";
+    if(t.includes('chatbot')||t.includes('bot')) return "An <b>AI Chatbot Agent</b> is included in <b>Premium</b> (₹9,999) and <b>3D Elite</b> (₹12,999). Engages visitors 24/7! 🤖";
+    if(t.includes('whatsapp')||t.includes('contact')||t.includes('reach')||t.includes('phone')||t.includes('number')) return "💬 WhatsApp: <a href='"+WA+"' target='_blank' style='color:#00d2ff'>+91 74167 47034</a><br>📧 <a href='mailto:xentrixballer@gmail.com' style='color:#00d2ff'>xentrixballer@gmail.com</a>";
+    if(t.includes('hire')||t.includes('start')||t.includes('order')||t.includes('buy')||t.includes('book')) return "Awesome! 🎉 Message us on WhatsApp: <a href='"+WA+"' target='_blank' style='color:#00d2ff'>+91 74167 47034</a> and mention your package!";
+    if(t.includes('time')||t.includes('long')||t.includes('deliver')) return "Delivery depends on the package. Basic takes a few days; 3D Elite takes longer. Message us for an exact timeline!";
+    if(t.includes('thank')) return "You're welcome! 😊";
+    if(t.includes('bye')) return "Goodbye! 👋 Contact us when you're ready.";
+    return "I'd love to help! 😊 Ask about <b>packages</b>, <b>pricing</b>, <b>domains</b>, or tap <b>WhatsApp</b>.";
   }
-  function handle(text) { addMsg(text, 'user'); botSay(getReply(text)); }
-  function send() { const text = input.value.trim(); if (!text) return; input.value = ''; handle(text); }
+  function handle(text){ addMsg(text,'user'); botSay(getReply(text)); }
+  function send(){ const text=input.value.trim(); if(!text) return; input.value=''; handle(text); }
   sendBtn.addEventListener('click', send);
-  input.addEventListener('keypress', e => { if (e.key === 'Enter') send(); });
+  input.addEventListener('keypress', e => { if(e.key==='Enter') send(); });
 })();
 </script>
 </body>
