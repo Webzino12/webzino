@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xentrix Studio | Professional Web Design</title>
+<title>Webzino Studio | Professional Web Design</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #05060a;
+    --bg: #04050a;
     --accent: #6c5ce7;
     --accent2: #00d2ff;
     --text: #e8e8f0;
@@ -22,41 +22,65 @@
     overflow-x: hidden;
   }
 
-  /* ===== INTRO ANIMATION ===== */
+  /* ===== PREMIUM CINEMATIC INTRO ===== */
   #intro {
     position: fixed; inset: 0; z-index: 9999;
-    background: var(--bg);
+    background: radial-gradient(circle at 50% 50%, #0a0c18 0%, #04050a 70%);
     display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    transition: opacity 1s ease, visibility 1s ease;
+    flex-direction: column; overflow: hidden;
+    transition: opacity 1.2s ease, visibility 1.2s ease;
   }
   #intro.hide { opacity: 0; visibility: hidden; }
+  /* ambient glow blobs */
+  #intro::before, #intro::after {
+    content: ''; position: absolute; border-radius: 50%;
+    filter: blur(120px); opacity: 0.5;
+  }
+  #intro::before { width: 500px; height: 500px; background: var(--accent);
+    top: -120px; left: -120px; animation: float1 6s ease-in-out infinite; }
+  #intro::after { width: 480px; height: 480px; background: var(--accent2);
+    bottom: -120px; right: -120px; animation: float2 7s ease-in-out infinite; }
+  @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,40px)} }
+  @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-40px)} }
+
+  .intro-wrap { position: relative; z-index: 2; text-align: center; }
   .intro-logo {
-    font-size: clamp(2rem, 8vw, 5rem);
-    font-weight: 800;
-    letter-spacing: 4px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    position: relative;
+    font-size: clamp(2.6rem, 11vw, 7rem);
+    font-weight: 900; letter-spacing: 8px;
+    color: transparent;
+    background: linear-gradient(110deg, #fff 20%, var(--accent2) 40%, var(--accent) 60%, #fff 80%);
+    background-size: 200% auto;
     -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-    opacity: 0;
-    animation: revealLogo 1.6s ease forwards 0.3s;
+    animation: shine 3s linear infinite, riseUp 1.4s cubic-bezier(.2,.8,.2,1) forwards;
+    opacity: 0; transform: translateY(40px);
   }
+  @keyframes riseUp {
+    0% { opacity: 0; transform: translateY(40px); filter: blur(14px); letter-spacing: 24px; }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); letter-spacing: 8px; }
+  }
+  @keyframes shine { to { background-position: 200% center; } }
+
+  /* sweeping light bar over text */
+  .intro-sweep {
+    position: absolute; top: 0; left: -60%; width: 60%; height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,0.5), transparent);
+    transform: skewX(-20deg);
+    animation: sweep 2.2s ease-in-out 1.2s;
+  }
+  @keyframes sweep { 0%{left:-60%} 100%{left:160%} }
+
   .intro-line {
-    height: 2px; width: 0;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    margin-top: 18px;
-    animation: growLine 1.2s ease forwards 1.4s;
+    height: 2px; width: 0; margin: 26px auto 0;
+    background: linear-gradient(90deg, transparent, var(--accent2), var(--accent), transparent);
+    animation: growLine 1.4s ease forwards 1.3s;
   }
+  @keyframes growLine { to { width: 300px; } }
   .intro-sub {
-    margin-top: 16px; color: var(--muted); letter-spacing: 6px;
-    font-size: 0.8rem; text-transform: uppercase;
-    opacity: 0; animation: fadeIn 1s ease forwards 1.8s;
+    margin-top: 20px; color: var(--muted); letter-spacing: 8px;
+    font-size: 0.78rem; text-transform: uppercase;
+    opacity: 0; animation: fadeIn 1.2s ease forwards 1.9s;
   }
-  @keyframes revealLogo {
-    0% { opacity: 0; transform: translateY(30px) scale(0.9); filter: blur(8px); }
-    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-  }
-  @keyframes growLine { to { width: 220px; } }
   @keyframes fadeIn { to { opacity: 1; } }
 
   /* ===== NAV ===== */
@@ -64,7 +88,7 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; justify-content: space-between; align-items: center;
     padding: 18px 6vw;
-    background: rgba(5,6,10,0.6);
+    background: rgba(4,5,10,0.6);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
@@ -208,16 +232,18 @@
 </head>
 <body>
 
-<!-- INTRO ANIMATION -->
+<!-- PREMIUM CINEMATIC INTRO -->
 <div id="intro">
-  <div class="intro-logo">XENTRIX</div>
-  <div class="intro-line"></div>
-  <div class="intro-sub">Crafting Digital Experiences</div>
+  <div class="intro-wrap">
+    <div class="intro-logo">WEBZINO<span class="intro-sweep"></span></div>
+    <div class="intro-line"></div>
+    <div class="intro-sub">Premium Digital Experiences</div>
+  </div>
 </div>
 
 <!-- NAV -->
 <nav>
-  <div class="logo">XENTRIX</div>
+  <div class="logo">WEBZINO</div>
   <ul>
     <li><a href="#hero">Home</a></li>
     <li><a href="#packages">Packages</a></li>
@@ -294,9 +320,9 @@
   <h2 class="section-title">About Me</h2>
   <p class="section-sub">Web designer & developer</p>
   <div class="about">
-    I'm a passionate web designer who creates professional, high-converting websites
-    for businesses and individuals. From simple landing pages to immersive 3D experiences,
-    I deliver quality work that helps your brand stand out online.
+    Webzino creates professional, high-converting websites for businesses and individuals.
+    From simple landing pages to immersive 3D experiences, we deliver premium-quality work
+    that helps your brand stand out online.
   </div>
 </section>
 
@@ -307,8 +333,8 @@
   <div class="contact-box">
     <div class="contact-grid">
       <div class="contact-card">
-        <span>Phone</span>
-        <a href="tel:+917416747034">+91 74167 47034</a>
+        <span>WhatsApp</span>
+        <a href="https://wa.me/917416747034" target="_blank" rel="noopener">+91 74167 47034</a>
       </div>
       <div class="contact-card">
         <span>Email</span>
@@ -318,7 +344,7 @@
   </div>
 </section>
 
-<footer>© 2026 Xentrix Studio · Designed & Developed by Xentrix</footer>
+<footer>© 2026 Webzino Studio · Designed & Developed by Webzino</footer>
 
 <!-- ===== AI CHATBOT ===== -->
 <button id="chat-toggle" aria-label="Open chat">🤖</button>
@@ -326,7 +352,7 @@
   <div class="chat-head">
     <div class="avatar">🤖</div>
     <div>
-      <h4>Xentrix AI Assistant</h4>
+      <h4>Webzino AI Assistant</h4>
       <p>● Online · Ask me anything</p>
     </div>
   </div>
@@ -341,9 +367,8 @@
 <!-- Three.js for 3D -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-  // Hide intro after animation
   window.addEventListener('load', () => {
-    setTimeout(() => document.getElementById('intro').classList.add('hide'), 3200);
+    setTimeout(() => document.getElementById('intro').classList.add('hide'), 3600);
   });
 
   // ===== 3D SCENE =====
@@ -414,13 +439,14 @@
   const input = document.getElementById('chat-input');
   const sendBtn = document.getElementById('chat-send');
   const quick = document.getElementById('quick-replies');
+  const WA = "https://wa.me/917416747034";
 
-  const quickOptions = ['View Packages', 'Pricing', 'Contact', 'Hire Xentrix'];
+  const quickOptions = ['View Packages', 'Pricing', 'WhatsApp', 'Hire Webzino'];
 
   toggle.addEventListener('click', () => {
     chatWin.classList.toggle('open');
     if (chatWin.classList.contains('open') && body.children.length === 0) {
-      botSay("👋 Hi! I'm the Xentrix AI Assistant. I can help you with packages, pricing, and getting in touch. What would you like to know?");
+      botSay("👋 Hi! I'm the Webzino AI Assistant. I can help you with packages, pricing, and getting in touch. What would you like to know?");
       renderQuick();
     }
   });
@@ -432,9 +458,7 @@
     body.appendChild(m);
     body.scrollTop = body.scrollHeight;
   }
-  function botSay(text) {
-    setTimeout(() => addMsg(text, 'bot'), 400);
-  }
+  function botSay(text) { setTimeout(() => addMsg(text, 'bot'), 400); }
   function renderQuick() {
     quick.innerHTML = '';
     quickOptions.forEach(opt => {
@@ -445,7 +469,6 @@
     });
   }
 
-  // Simple AI knowledge base
   function getReply(msg) {
     const t = msg.toLowerCase();
     if (/(hi|hello|hey|yo)\b/.test(t)) return "Hello! 👋 How can I help you today? Ask me about our packages or pricing.";
@@ -455,12 +478,12 @@
     if (t.includes('pro')) return "The <b>Pro</b> package (₹6,999) is our most popular! It includes a multi-page website, animations & effects, advanced SEO, and 3 revisions.";
     if (t.includes('monthly') || t.includes('managing') || t.includes('maintenance')) return "The <b>Monthly Managing</b> plan (₹999/mo) covers website maintenance, content updates, security monitoring, and priority support.";
     if (t.includes('3d') || t.includes('elite')) return "The <b>3D Elite</b> package (₹11,999) is our premium offer: a full 3D website, custom 3D models, premium animations, and unlimited revisions! 🚀";
-    if (t.includes('contact') || t.includes('reach') || t.includes('phone') || t.includes('email') || t.includes('number')) return "📞 Phone: <a href='tel:+917416747034' style='color:#00d2ff'>+91 74167 47034</a><br>📧 Email: <a href='mailto:xentrixballer@gmail.com' style='color:#00d2ff'>xentrixballer@gmail.com</a>";
-    if (t.includes('hire') || t.includes('start') || t.includes('order') || t.includes('buy') || t.includes('book')) return "Awesome! 🎉 To get started, contact us:<br>📞 <a href='tel:+917416747034' style='color:#00d2ff'>+91 74167 47034</a><br>📧 <a href='mailto:xentrixballer@gmail.com' style='color:#00d2ff'>xentrixballer@gmail.com</a><br>Mention which package you're interested in!";
-    if (t.includes('time') || t.includes('long') || t.includes('deliver')) return "Delivery time depends on the package. Basic sites take a few days, while 3D Elite projects take longer due to custom work. Contact us for an exact timeline!";
+    if (t.includes('whatsapp') || t.includes('contact') || t.includes('reach') || t.includes('phone') || t.includes('number') || t.includes('chat')) return "💬 Chat with us on WhatsApp: <a href='" + WA + "' target='_blank' style='color:#00d2ff'>+91 74167 47034</a><br>📧 Email: <a href='mailto:xentrixballer@gmail.com' style='color:#00d2ff'>xentrixballer@gmail.com</a>";
+    if (t.includes('hire') || t.includes('start') || t.includes('order') || t.includes('buy') || t.includes('book')) return "Awesome! 🎉 Let's get started. Message us on WhatsApp: <a href='" + WA + "' target='_blank' style='color:#00d2ff'>+91 74167 47034</a> and mention which package you want!";
+    if (t.includes('time') || t.includes('long') || t.includes('deliver')) return "Delivery time depends on the package. Basic sites take a few days, while 3D Elite projects take longer due to custom work. Message us on WhatsApp for an exact timeline!";
     if (t.includes('thank')) return "You're welcome! 😊 Feel free to reach out anytime.";
     if (t.includes('bye')) return "Goodbye! 👋 Don't hesitate to contact us when you're ready.";
-    return "I'm not sure about that, but I'd love to help! 😊 You can ask about our <b>packages</b>, <b>pricing</b>, or <b>contact</b> details. Or reach us directly at 📞 +91 74167 47034.";
+    return "I'm not sure about that, but I'd love to help! 😊 Ask about our <b>packages</b>, <b>pricing</b>, or tap <b>WhatsApp</b> to chat with us directly.";
   }
 
   function handle(text) {
