@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Webzino Studio | Professional Web Design</title>
+<title>Webzino Studio | Premium Web Design</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #04050a;
+    --bg: #06060e;
     --accent: #6c5ce7;
     --accent2: #00d2ff;
     --text: #e8e8f0;
@@ -15,82 +15,14 @@
     --card: rgba(255,255,255,0.04);
   }
   html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overflow-x: hidden;
-  }
-
-  /* ===== PREMIUM CINEMATIC INTRO ===== */
-  #intro {
-    position: fixed; inset: 0; z-index: 9999;
-    background: radial-gradient(circle at 50% 50%, #0a0c18 0%, #04050a 70%);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; overflow: hidden;
-    transition: opacity 1.2s ease, visibility 1.2s ease;
-  }
-  #intro.hide { opacity: 0; visibility: hidden; }
-  /* ambient glow blobs */
-  #intro::before, #intro::after {
-    content: ''; position: absolute; border-radius: 50%;
-    filter: blur(120px); opacity: 0.5;
-  }
-  #intro::before { width: 500px; height: 500px; background: var(--accent);
-    top: -120px; left: -120px; animation: float1 6s ease-in-out infinite; }
-  #intro::after { width: 480px; height: 480px; background: var(--accent2);
-    bottom: -120px; right: -120px; animation: float2 7s ease-in-out infinite; }
-  @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(60px,40px)} }
-  @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,-40px)} }
-
-  .intro-wrap { position: relative; z-index: 2; text-align: center; }
-  .intro-logo {
-    position: relative;
-    font-size: clamp(2.6rem, 11vw, 7rem);
-    font-weight: 900; letter-spacing: 8px;
-    color: transparent;
-    background: linear-gradient(110deg, #fff 20%, var(--accent2) 40%, var(--accent) 60%, #fff 80%);
-    background-size: 200% auto;
-    -webkit-background-clip: text; background-clip: text;
-    animation: shine 3s linear infinite, riseUp 1.4s cubic-bezier(.2,.8,.2,1) forwards;
-    opacity: 0; transform: translateY(40px);
-  }
-  @keyframes riseUp {
-    0% { opacity: 0; transform: translateY(40px); filter: blur(14px); letter-spacing: 24px; }
-    100% { opacity: 1; transform: translateY(0); filter: blur(0); letter-spacing: 8px; }
-  }
-  @keyframes shine { to { background-position: 200% center; } }
-
-  /* sweeping light bar over text */
-  .intro-sweep {
-    position: absolute; top: 0; left: -60%; width: 60%; height: 100%;
-    background: linear-gradient(100deg, transparent, rgba(255,255,255,0.5), transparent);
-    transform: skewX(-20deg);
-    animation: sweep 2.2s ease-in-out 1.2s;
-  }
-  @keyframes sweep { 0%{left:-60%} 100%{left:160%} }
-
-  .intro-line {
-    height: 2px; width: 0; margin: 26px auto 0;
-    background: linear-gradient(90deg, transparent, var(--accent2), var(--accent), transparent);
-    animation: growLine 1.4s ease forwards 1.3s;
-  }
-  @keyframes growLine { to { width: 300px; } }
-  .intro-sub {
-    margin-top: 20px; color: var(--muted); letter-spacing: 8px;
-    font-size: 0.78rem; text-transform: uppercase;
-    opacity: 0; animation: fadeIn 1.2s ease forwards 1.9s;
-  }
-  @keyframes fadeIn { to { opacity: 1; } }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
   /* ===== NAV ===== */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 18px 6vw;
-    background: rgba(4,5,10,0.6);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 18px 6vw; background: rgba(6,6,14,0.6);
+    backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06);
   }
   .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: 1px;
     background: linear-gradient(90deg, var(--accent), var(--accent2));
@@ -98,56 +30,54 @@
   nav ul { display: flex; gap: 28px; list-style: none; }
   nav a { color: var(--muted); text-decoration: none; font-size: 0.95rem; transition: .3s; }
   nav a:hover { color: var(--text); }
-  .nav-btn {
-    padding: 9px 20px; border-radius: 30px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    color: #fff !important; font-weight: 600;
-  }
+  .nav-btn { padding: 9px 20px; border-radius: 30px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff !important; font-weight: 600; }
 
-  /* ===== HERO with 3D ===== */
-  #hero {
-    position: relative; height: 100vh;
-    display: flex; align-items: center; padding: 0 6vw;
+  /* ===== HERO with particle sphere ===== */
+  #hero { position: relative; height: 100vh; overflow: hidden; }
+  #scene { position: absolute; inset: 0; z-index: 0; }
+  #hero-overlay {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    pointer-events: none; text-align: center;
   }
-  #canvas3d { position: absolute; inset: 0; z-index: 0; }
-  .hero-content { position: relative; z-index: 2; max-width: 620px; }
-  .hero-content h1 {
-    font-size: clamp(2.2rem, 6vw, 4.2rem); line-height: 1.1; font-weight: 800;
-  }
-  .hero-content h1 span {
+  #title { color: #fff; font-weight: 800; font-size: clamp(2.6rem, 11vw, 7rem);
+    letter-spacing: 10px; opacity: 0; transform: translateY(24px);
+    transition: opacity 1.6s ease, transform 1.6s ease, letter-spacing 1.6s ease;
+    text-shadow: 0 0 40px rgba(120,120,255,0.35); }
+  #title.show { opacity: 1; transform: translateY(0); letter-spacing: 14px; }
+  #subtitle { margin-top: 22px; font-size: clamp(0.8rem, 2.4vw, 1.1rem);
+    letter-spacing: 6px; text-transform: uppercase;
     background: linear-gradient(90deg, var(--accent), var(--accent2));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .hero-content p { margin: 22px 0 32px; color: var(--muted); font-size: 1.1rem; max-width: 480px; }
-  .btn {
-    display: inline-block; padding: 14px 32px; border-radius: 40px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    color: #fff; text-decoration: none; font-weight: 600;
-    transition: transform .3s, box-shadow .3s;
-    box-shadow: 0 8px 30px rgba(108,92,231,0.4);
-  }
-  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,210,255,0.5); }
+    opacity: 0; transition: opacity 1.6s ease 0.4s; }
+  #subtitle.show { opacity: 1; }
+  #hero-cta { margin-top: 40px; opacity: 0; transition: opacity 1.2s ease 1s; pointer-events: none; }
+  #hero-cta.show { opacity: 1; pointer-events: all; }
+  #hint { position: absolute; bottom: 36px; left: 0; right: 0; z-index: 2; text-align: center;
+    pointer-events: none; color: rgba(255,255,255,0.5); font-size: 0.8rem; letter-spacing: 3px;
+    text-transform: uppercase; animation: hintPulse 2s ease-in-out infinite; transition: opacity 1s ease; }
+  #hint.hide { opacity: 0; }
+  @keyframes hintPulse { 0%,100%{opacity:0.3} 50%{opacity:0.7} }
 
-  /* ===== SECTIONS ===== */
-  section { padding: 100px 6vw; }
+  /* ===== BUTTONS / SECTIONS ===== */
+  .btn { display: inline-block; padding: 14px 32px; border-radius: 40px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff; text-decoration: none;
+    font-weight: 600; transition: transform .3s, box-shadow .3s; box-shadow: 0 8px 30px rgba(108,92,231,0.4); }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,210,255,0.5); }
+  section { padding: 100px 6vw; position: relative; z-index: 1; background: var(--bg); }
   .section-title { text-align: center; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; margin-bottom: 12px; }
   .section-sub { text-align: center; color: var(--muted); margin-bottom: 60px; }
 
   /* ===== PACKAGES ===== */
   .packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 28px; max-width: 1200px; margin: 0 auto; }
-  .pkg {
-    background: var(--card); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px; padding: 40px 30px; text-align: center;
-    transition: transform .4s, border-color .4s, box-shadow .4s;
-    position: relative; overflow: hidden;
-  }
+  .pkg { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px;
+    padding: 40px 30px; text-align: center; transition: transform .4s, border-color .4s, box-shadow .4s;
+    position: relative; overflow: hidden; }
   .pkg:hover { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 20px 50px rgba(108,92,231,0.25); }
   .pkg.featured { border-color: var(--accent2); }
-  .pkg .badge {
-    position: absolute; top: 16px; right: -34px; transform: rotate(45deg);
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    color: #fff; font-size: .7rem; padding: 4px 40px; font-weight: 700;
-  }
+  .pkg .badge { position: absolute; top: 16px; right: -34px; transform: rotate(45deg);
+    background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff; font-size: .7rem; padding: 4px 40px; font-weight: 700; }
   .pkg h3 { font-size: 1.3rem; margin-bottom: 10px; }
   .pkg .price { font-size: 2.4rem; font-weight: 800; margin: 14px 0;
     background: linear-gradient(90deg, var(--accent), var(--accent2));
@@ -156,55 +86,33 @@
   .pkg ul { list-style: none; margin: 20px 0 28px; }
   .pkg ul li { color: var(--muted); padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: .95rem; }
 
-  /* ===== ABOUT ===== */
   .about { max-width: 800px; margin: 0 auto; text-align: center; color: var(--muted); font-size: 1.1rem; line-height: 1.8; }
 
   /* ===== CONTACT ===== */
   .contact-box { max-width: 600px; margin: 0 auto; text-align: center; }
   .contact-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px; }
-  .contact-card {
-    background: var(--card); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px; padding: 24px 40px; transition: .3s;
-  }
+  .contact-card { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px 40px; transition: .3s; }
   .contact-card:hover { border-color: var(--accent); transform: translateY(-5px); }
   .contact-card a { color: var(--accent2); text-decoration: none; font-size: 1.1rem; }
   .contact-card span { display: block; color: var(--muted); font-size: .8rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 2px; }
 
-  footer { text-align: center; padding: 40px; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); font-size: .9rem; }
+  footer { text-align: center; padding: 40px; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); font-size: .9rem; position: relative; z-index: 1; background: var(--bg); }
 
   /* ===== AI CHATBOT ===== */
-  #chat-toggle {
-    position: fixed; bottom: 26px; right: 26px; z-index: 1000;
-    width: 64px; height: 64px; border-radius: 50%; border: none; cursor: pointer;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    box-shadow: 0 8px 30px rgba(108,92,231,0.5);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.6rem; transition: transform .3s;
-    animation: pulse 2.5s infinite;
-  }
+  #chat-toggle { position: fixed; bottom: 26px; right: 26px; z-index: 1000; width: 64px; height: 64px;
+    border-radius: 50%; border: none; cursor: pointer; background: linear-gradient(135deg, var(--accent), var(--accent2));
+    box-shadow: 0 8px 30px rgba(108,92,231,0.5); display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; transition: transform .3s; animation: pulse 2.5s infinite; }
   #chat-toggle:hover { transform: scale(1.1); }
-  @keyframes pulse {
-    0%,100% { box-shadow: 0 8px 30px rgba(108,92,231,0.5); }
-    50% { box-shadow: 0 8px 40px rgba(0,210,255,0.7); }
-  }
-  #chat-window {
-    position: fixed; bottom: 100px; right: 26px; z-index: 1000;
-    width: 360px; max-width: calc(100vw - 40px); height: 480px; max-height: 70vh;
-    background: #0c0e16; border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px; overflow: hidden;
-    display: flex; flex-direction: column;
-    transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none;
-    transition: .3s; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  }
+  @keyframes pulse { 0%,100% { box-shadow: 0 8px 30px rgba(108,92,231,0.5); } 50% { box-shadow: 0 8px 40px rgba(0,210,255,0.7); } }
+  #chat-window { position: fixed; bottom: 100px; right: 26px; z-index: 1000; width: 360px;
+    max-width: calc(100vw - 40px); height: 480px; max-height: 70vh; background: #0c0e16;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden;
+    display: flex; flex-direction: column; transform: translateY(20px) scale(0.95); opacity: 0;
+    pointer-events: none; transition: .3s; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
   #chat-window.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
-  .chat-head {
-    padding: 18px 20px; background: linear-gradient(135deg, var(--accent), var(--accent2));
-    display: flex; align-items: center; gap: 12px;
-  }
-  .chat-head .avatar {
-    width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.2);
-    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-  }
+  .chat-head { padding: 18px 20px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; gap: 12px; }
+  .chat-head .avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
   .chat-head h4 { font-size: 1rem; color: #fff; }
   .chat-head p { font-size: .75rem; color: rgba(255,255,255,0.8); }
   .chat-body { flex: 1; padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
@@ -212,34 +120,19 @@
   .msg.bot { background: rgba(255,255,255,0.06); align-self: flex-start; border-bottom-left-radius: 4px; }
   .msg.user { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
   .quick-replies { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 18px 10px; }
-  .quick-replies button {
-    background: rgba(108,92,231,0.15); border: 1px solid var(--accent);
-    color: var(--accent2); padding: 6px 12px; border-radius: 20px; font-size: .8rem; cursor: pointer; transition: .2s;
-  }
+  .quick-replies button { background: rgba(108,92,231,0.15); border: 1px solid var(--accent); color: var(--accent2);
+    padding: 6px 12px; border-radius: 20px; font-size: .8rem; cursor: pointer; transition: .2s; }
   .quick-replies button:hover { background: var(--accent); color: #fff; }
   .chat-input { display: flex; padding: 12px; border-top: 1px solid rgba(255,255,255,0.08); gap: 8px; }
-  .chat-input input {
-    flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 24px; padding: 10px 16px; color: var(--text); outline: none; font-size: .9rem;
-  }
-  .chat-input button {
-    background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none;
-    width: 42px; height: 42px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 1.1rem;
-  }
+  .chat-input input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px; padding: 10px 16px; color: var(--text); outline: none; font-size: .9rem; }
+  .chat-input button { background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none;
+    width: 42px; height: 42px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 1.1rem; }
 
   @media(max-width: 768px){ nav ul { display: none; } }
 </style>
 </head>
 <body>
-
-<!-- PREMIUM CINEMATIC INTRO -->
-<div id="intro">
-  <div class="intro-wrap">
-    <div class="intro-logo">WEBZINO<span class="intro-sweep"></span></div>
-    <div class="intro-line"></div>
-    <div class="intro-sub">Premium Digital Experiences</div>
-  </div>
-</div>
 
 <!-- NAV -->
 <nav>
@@ -252,14 +145,15 @@
   </ul>
 </nav>
 
-<!-- HERO with 3D model -->
+<!-- HERO with interactive particle sphere -->
 <section id="hero">
-  <div id="canvas3d"></div>
-  <div class="hero-content">
-    <h1>I Build <span>Stunning</span><br>Websites That Convert</h1>
-    <p>Professional, modern, and 3D-powered websites tailored to your brand. Let's bring your vision to life.</p>
-    <a href="#packages" class="btn">View Packages</a>
+  <div id="scene"></div>
+  <div id="hero-overlay">
+    <div id="title">WEBZINO</div>
+    <div id="subtitle">Premium Digital Experiences</div>
+    <div id="hero-cta"><a href="#packages" class="btn">View Packages</a></div>
   </div>
+  <div id="hint">Drag to interact</div>
 </section>
 
 <!-- PACKAGES -->
@@ -270,46 +164,26 @@
     <div class="pkg">
       <h3>Basic</h3>
       <div class="price">₹4,999</div>
-      <ul>
-        <li>Single Page Website</li>
-        <li>Mobile Responsive</li>
-        <li>Basic SEO Setup</li>
-        <li>1 Revision</li>
-      </ul>
+      <ul><li>Single Page Website</li><li>Mobile Responsive</li><li>Basic SEO Setup</li><li>1 Revision</li></ul>
       <a href="#contact" class="btn">Get Started</a>
     </div>
     <div class="pkg featured">
       <div class="badge">POPULAR</div>
       <h3>Pro</h3>
       <div class="price">₹6,999</div>
-      <ul>
-        <li>Multi-Page Website</li>
-        <li>Animations & Effects</li>
-        <li>Advanced SEO</li>
-        <li>3 Revisions</li>
-      </ul>
+      <ul><li>Multi-Page Website</li><li>Animations & Effects</li><li>Advanced SEO</li><li>3 Revisions</li></ul>
       <a href="#contact" class="btn">Get Started</a>
     </div>
     <div class="pkg">
       <h3>Monthly Managing</h3>
       <div class="price">₹999<small>/mo</small></div>
-      <ul>
-        <li>Website Maintenance</li>
-        <li>Content Updates</li>
-        <li>Security Monitoring</li>
-        <li>Priority Support</li>
-      </ul>
+      <ul><li>Website Maintenance</li><li>Content Updates</li><li>Security Monitoring</li><li>Priority Support</li></ul>
       <a href="#contact" class="btn">Subscribe</a>
     </div>
     <div class="pkg">
       <h3>3D Elite</h3>
       <div class="price">₹11,999</div>
-      <ul>
-        <li>Full 3D Website</li>
-        <li>Custom 3D Models</li>
-        <li>Premium Animations</li>
-        <li>Unlimited Revisions</li>
-      </ul>
+      <ul><li>Full 3D Website</li><li>Custom 3D Models</li><li>Premium Animations</li><li>Unlimited Revisions</li></ul>
       <a href="#contact" class="btn">Go Elite</a>
     </div>
   </div>
@@ -346,15 +220,12 @@
 
 <footer>© 2026 Webzino Studio · Designed & Developed by Webzino</footer>
 
-<!-- ===== AI CHATBOT ===== -->
+<!-- AI CHATBOT -->
 <button id="chat-toggle" aria-label="Open chat">🤖</button>
 <div id="chat-window">
   <div class="chat-head">
     <div class="avatar">🤖</div>
-    <div>
-      <h4>Webzino AI Assistant</h4>
-      <p>● Online · Ask me anything</p>
-    </div>
+    <div><h4>Webzino AI Assistant</h4><p>● Online · Ask me anything</p></div>
   </div>
   <div class="chat-body" id="chat-body"></div>
   <div class="quick-replies" id="quick-replies"></div>
@@ -364,75 +235,154 @@
   </div>
 </div>
 
-<!-- Three.js for 3D -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-  window.addEventListener('load', () => {
-    setTimeout(() => document.getElementById('intro').classList.add('hide'), 3600);
-  });
+/* ===== INTERACTIVE PARTICLE SPHERE ===== */
+(function () {
+  const PARTICLE_COUNT = 3500;
+  const SPHERE_RADIUS = 2.4;
+  const container = document.getElementById('scene');
 
-  // ===== 3D SCENE =====
-  const container = document.getElementById('canvas3d');
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
-  camera.position.z = 5;
-
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   container.appendChild(renderer.domElement);
 
-  const geometry = new THREE.IcosahedronGeometry(1.6, 0);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0x6c5ce7, metalness: 0.7, roughness: 0.2, flatShading: true
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.z = 6;
+
+  const home = new Float32Array(PARTICLE_COUNT * 3);
+  const start = new Float32Array(PARTICLE_COUNT * 3);
+  const current = new Float32Array(PARTICLE_COUNT * 3);
+  const velocity = new Float32Array(PARTICLE_COUNT * 3);
+  const colors = new Float32Array(PARTICLE_COUNT * 3);
+  const color = new THREE.Color();
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const i3 = i * 3;
+    const t = i / PARTICLE_COUNT;
+    const phi = Math.acos(1 - 2 * t);
+    const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+    const r = SPHERE_RADIUS * (0.92 + Math.random() * 0.08);
+    home[i3] = r * Math.sin(phi) * Math.cos(theta);
+    home[i3+1] = r * Math.sin(phi) * Math.sin(theta);
+    home[i3+2] = r * Math.cos(phi);
+
+    const sr = 14 + Math.random() * 10;
+    const sp = Math.acos(2 * Math.random() - 1);
+    const st = Math.random() * Math.PI * 2;
+    start[i3] = sr * Math.sin(sp) * Math.cos(st);
+    start[i3+1] = sr * Math.sin(sp) * Math.sin(st);
+    start[i3+2] = sr * Math.cos(sp);
+    current[i3] = start[i3]; current[i3+1] = start[i3+1]; current[i3+2] = start[i3+2];
+
+    const hue = 0.62 + (1 - t) * 0.25;
+    color.setHSL(hue, 0.85, 0.6);
+    colors[i3] = color.r; colors[i3+1] = color.g; colors[i3+2] = color.b;
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(current, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  const material = new THREE.PointsMaterial({
+    size: 0.028, sizeAttenuation: true, vertexColors: true,
+    transparent: true, opacity: 0.92, depthWrite: false, blending: THREE.AdditiveBlending
   });
-  const shape = new THREE.Mesh(geometry, material);
-  shape.position.x = 2;
-  scene.add(shape);
+  const points = new THREE.Points(geometry, material);
+  scene.add(points);
 
-  const wire = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(1.9, 0),
-    new THREE.MeshBasicMaterial({ color: 0x00d2ff, wireframe: true, transparent: true, opacity: 0.3 })
-  );
-  wire.position.x = 2;
-  scene.add(wire);
+  const pointer = new THREE.Vector2(0, 0);
+  const pointer3D = new THREE.Vector3();
+  let pushRadius = 1.4, pushForce = 0.6, targetRadius = 1.4, targetForce = 0.6;
 
-  const light1 = new THREE.PointLight(0x00d2ff, 1.5); light1.position.set(5,5,5); scene.add(light1);
-  const light2 = new THREE.PointLight(0x6c5ce7, 1.5); light2.position.set(-5,-3,3); scene.add(light2);
-  scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+  function setPointer(x, y) {
+    pointer.x = (x / window.innerWidth) * 2 - 1;
+    pointer.y = -(y / window.innerHeight) * 2 + 1;
+  }
+  function updatePointer3D() {
+    pointer3D.set(pointer.x, pointer.y, 0.5).unproject(camera);
+    const dir = pointer3D.sub(camera.position).normalize();
+    const dist = -camera.position.z / dir.z;
+    pointer3D.copy(camera.position).add(dir.multiplyScalar(dist));
+  }
 
-  const pGeo = new THREE.BufferGeometry();
-  const pCount = 400, pos = new Float32Array(pCount*3);
-  for(let i=0;i<pCount*3;i++) pos[i] = (Math.random()-0.5)*20;
-  pGeo.setAttribute('position', new THREE.BufferAttribute(pos,3));
-  const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color:0x6c5ce7, size:0.03 }));
-  scene.add(particles);
+  window.addEventListener('mousemove', e => setPointer(e.clientX, e.clientY));
+  window.addEventListener('mousedown', () => { targetRadius = 3.2; targetForce = 2.4; });
+  window.addEventListener('mouseup', () => { targetRadius = 1.4; targetForce = 0.6; });
+  window.addEventListener('touchstart', e => { if (e.touches[0]) setPointer(e.touches[0].clientX, e.touches[0].clientY); targetRadius = 3.2; targetForce = 2.4; }, { passive: true });
+  window.addEventListener('touchmove', e => { e.preventDefault(); if (e.touches[0]) setPointer(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+  window.addEventListener('touchend', () => { targetRadius = 1.4; targetForce = 0.6; });
 
-  let mouseX = 0, mouseY = 0;
-  document.addEventListener('mousemove', e => {
-    mouseX = (e.clientX/window.innerWidth - 0.5);
-    mouseY = (e.clientY/window.innerHeight - 0.5);
-  });
+  const startTime = performance.now();
+  let textShown = false;
+  function revealText() {
+    document.getElementById('title').classList.add('show');
+    document.getElementById('subtitle').classList.add('show');
+    document.getElementById('hero-cta').classList.add('show');
+    document.getElementById('hint').classList.add('hide');
+  }
 
-  function animate(){
+  const pos = geometry.attributes.position.array;
+  function animate() {
     requestAnimationFrame(animate);
-    shape.rotation.x += 0.004; shape.rotation.y += 0.006;
-    wire.rotation.x -= 0.002; wire.rotation.y -= 0.003;
-    particles.rotation.y += 0.0005;
-    camera.position.x += (mouseX*1.5 - camera.position.x)*0.05;
-    camera.position.y += (-mouseY*1.5 - camera.position.y)*0.05;
+    const elapsed = (performance.now() - startTime) / 1000;
+    const assembly = Math.min(elapsed / 2.0, 1);
+    const ease = 1 - Math.pow(1 - assembly, 3);
+    if (!textShown && elapsed > 2.0) { textShown = true; revealText(); }
+
+    pushRadius += (targetRadius - pushRadius) * 0.08;
+    pushForce += (targetForce - pushForce) * 0.08;
+    updatePointer3D();
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const i3 = i * 3;
+      const hx = start[i3] + (home[i3] - start[i3]) * ease;
+      const hy = start[i3+1] + (home[i3+1] - start[i3+1]) * ease;
+      const hz = start[i3+2] + (home[i3+2] - start[i3+2]) * ease;
+      let cx = current[i3], cy = current[i3+1], cz = current[i3+2];
+
+      velocity[i3] += (hx - cx) * 0.06;
+      velocity[i3+1] += (hy - cy) * 0.06;
+      velocity[i3+2] += (hz - cz) * 0.06;
+
+      if (assembly > 0.6) {
+        const dx = cx - pointer3D.x, dy = cy - pointer3D.y, dz = cz - pointer3D.z;
+        const distSq = dx*dx + dy*dy + dz*dz, radSq = pushRadius * pushRadius;
+        if (distSq < radSq) {
+          const dist = Math.sqrt(distSq) || 0.0001;
+          const strength = (1 - dist / pushRadius) * pushForce;
+          velocity[i3] += (dx / dist) * strength * 0.5;
+          velocity[i3+1] += (dy / dist) * strength * 0.5;
+          velocity[i3+2] += (dz / dist) * strength * 0.5;
+        }
+      }
+
+      velocity[i3] *= 0.86; velocity[i3+1] *= 0.86; velocity[i3+2] *= 0.86;
+      cx += velocity[i3]; cy += velocity[i3+1]; cz += velocity[i3+2];
+      current[i3] = cx; current[i3+1] = cy; current[i3+2] = cz;
+      pos[i3] = cx; pos[i3+1] = cy; pos[i3+2] = cz;
+    }
+    geometry.attributes.position.needsUpdate = true;
+    points.rotation.y += 0.0016;
+
+    camera.position.x += (pointer.x * 1.2 - camera.position.x) * 0.04;
+    camera.position.y += (pointer.y * 1.2 - camera.position.y) * 0.04;
     camera.lookAt(scene.position);
     renderer.render(scene, camera);
   }
   animate();
 
   window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   });
+})();
 
-  // ===== AI CHATBOT LOGIC =====
+/* ===== AI CHATBOT ===== */
+(function () {
   const toggle = document.getElementById('chat-toggle');
   const chatWin = document.getElementById('chat-window');
   const body = document.getElementById('chat-body');
@@ -440,7 +390,6 @@
   const sendBtn = document.getElementById('chat-send');
   const quick = document.getElementById('quick-replies');
   const WA = "https://wa.me/917416747034";
-
   const quickOptions = ['View Packages', 'Pricing', 'WhatsApp', 'Hire Webzino'];
 
   toggle.addEventListener('click', () => {
@@ -450,25 +399,20 @@
       renderQuick();
     }
   });
-
   function addMsg(text, who) {
     const m = document.createElement('div');
-    m.className = 'msg ' + who;
-    m.innerHTML = text;
-    body.appendChild(m);
-    body.scrollTop = body.scrollHeight;
+    m.className = 'msg ' + who; m.innerHTML = text;
+    body.appendChild(m); body.scrollTop = body.scrollHeight;
   }
   function botSay(text) { setTimeout(() => addMsg(text, 'bot'), 400); }
   function renderQuick() {
     quick.innerHTML = '';
     quickOptions.forEach(opt => {
       const b = document.createElement('button');
-      b.textContent = opt;
-      b.onclick = () => handle(opt);
+      b.textContent = opt; b.onclick = () => handle(opt);
       quick.appendChild(b);
     });
   }
-
   function getReply(msg) {
     const t = msg.toLowerCase();
     if (/(hi|hello|hey|yo)\b/.test(t)) return "Hello! 👋 How can I help you today? Ask me about our packages or pricing.";
@@ -480,24 +424,16 @@
     if (t.includes('3d') || t.includes('elite')) return "The <b>3D Elite</b> package (₹11,999) is our premium offer: a full 3D website, custom 3D models, premium animations, and unlimited revisions! 🚀";
     if (t.includes('whatsapp') || t.includes('contact') || t.includes('reach') || t.includes('phone') || t.includes('number') || t.includes('chat')) return "💬 Chat with us on WhatsApp: <a href='" + WA + "' target='_blank' style='color:#00d2ff'>+91 74167 47034</a><br>📧 Email: <a href='mailto:xentrixballer@gmail.com' style='color:#00d2ff'>xentrixballer@gmail.com</a>";
     if (t.includes('hire') || t.includes('start') || t.includes('order') || t.includes('buy') || t.includes('book')) return "Awesome! 🎉 Let's get started. Message us on WhatsApp: <a href='" + WA + "' target='_blank' style='color:#00d2ff'>+91 74167 47034</a> and mention which package you want!";
-    if (t.includes('time') || t.includes('long') || t.includes('deliver')) return "Delivery time depends on the package. Basic sites take a few days, while 3D Elite projects take longer due to custom work. Message us on WhatsApp for an exact timeline!";
+    if (t.includes('time') || t.includes('long') || t.includes('deliver')) return "Delivery time depends on the package. Basic sites take a few days, while 3D Elite projects take longer. Message us on WhatsApp for an exact timeline!";
     if (t.includes('thank')) return "You're welcome! 😊 Feel free to reach out anytime.";
     if (t.includes('bye')) return "Goodbye! 👋 Don't hesitate to contact us when you're ready.";
     return "I'm not sure about that, but I'd love to help! 😊 Ask about our <b>packages</b>, <b>pricing</b>, or tap <b>WhatsApp</b> to chat with us directly.";
   }
-
-  function handle(text) {
-    addMsg(text, 'user');
-    botSay(getReply(text));
-  }
-  function send() {
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    handle(text);
-  }
+  function handle(text) { addMsg(text, 'user'); botSay(getReply(text)); }
+  function send() { const text = input.value.trim(); if (!text) return; input.value = ''; handle(text); }
   sendBtn.addEventListener('click', send);
   input.addEventListener('keypress', e => { if (e.key === 'Enter') send(); });
+})();
 </script>
 </body>
 </html>
