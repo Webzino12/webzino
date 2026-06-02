@@ -9,19 +9,31 @@
   :root {
     --bg: #06060e; --bg2: #0a0a16;
     --accent: #6c5ce7; --accent2: #00d2ff;
+    --c1: #6c5ce7; --c2: #00d2ff; --c3: #ff5edb; --c4: #5effc4;
     --text: #e8e8f0; --muted: #9a9ab0;
     --card: rgba(255,255,255,0.04);
     --grad: linear-gradient(90deg, #6c5ce7, #00d2ff);
+    --rainbow: linear-gradient(90deg, #6c5ce7, #00d2ff, #5effc4, #ff5edb, #6c5ce7);
   }
   html { scroll-behavior: smooth; }
   body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
   ::selection { background: var(--accent); color: #fff; }
   ::-webkit-scrollbar { width: 10px; }
   ::-webkit-scrollbar-track { background: #050509; }
-  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--rainbow); background-size: 100% 300%; animation: scrollHue 6s linear infinite; border-radius: 10px; }
+  @keyframes scrollHue { to { background-position: 0 300%; } }
 
-  /* animated grid background */
-  #grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .35;
+  /* aurora background glow */
+  #aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  #aurora span { position: absolute; border-radius: 50%; filter: blur(140px); opacity: .25; }
+  #aurora .a1 { width: 500px; height: 500px; background: var(--c1); top: -10%; left: -10%; animation: aur1 16s ease-in-out infinite; }
+  #aurora .a2 { width: 460px; height: 460px; background: var(--c3); bottom: -10%; right: -5%; animation: aur2 19s ease-in-out infinite; }
+  #aurora .a3 { width: 420px; height: 420px; background: var(--c4); top: 40%; left: 50%; animation: aur3 22s ease-in-out infinite; }
+  @keyframes aur1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(120px,80px)} }
+  @keyframes aur2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-100px,-60px)} }
+  @keyframes aur3 { 0%,100%{transform:translate(-50%,0)} 50%{transform:translate(-50%,-80px)} }
+
+  #grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .3;
     background-image: linear-gradient(rgba(108,92,231,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(108,92,231,0.08) 1px, transparent 1px);
     background-size: 60px 60px; animation: gridMove 20s linear infinite; }
   @keyframes gridMove { to { background-position: 60px 60px; } }
@@ -38,9 +50,12 @@
   #intro::after  { width: 440px; height: 440px; background: var(--accent2); bottom: -120px; right: -120px; }
   .intro-3d { transform-style: preserve-3d; display: flex; gap: 4px; animation: introCam 3.4s cubic-bezier(.2,.7,.2,1) forwards; }
   @keyframes introCam { 0%{transform:rotateY(70deg) rotateX(20deg) scale(0.4)} 55%{transform:rotateY(-8deg) rotateX(4deg) scale(1.05)} 100%{transform:rotateY(0) rotateX(0) scale(1)} }
-  .intro-letter { font-size: clamp(2.6rem,11vw,7rem); font-weight: 900; color: #fff; letter-spacing: 2px; transform-style: preserve-3d;
-    text-shadow: 0 0 30px rgba(120,120,255,0.5); opacity: 0; transform: translateZ(-600px) rotateX(90deg); animation: letterIn 0.9s cubic-bezier(.2,.8,.2,1) forwards; }
+  .intro-letter { font-size: clamp(2.6rem,11vw,7rem); font-weight: 900; letter-spacing: 2px; transform-style: preserve-3d;
+    background: var(--rainbow); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation-name: letterIn, hueFlow;
+    text-shadow: 0 0 30px rgba(120,120,255,0.3); opacity: 0; transform: translateZ(-600px) rotateX(90deg);
+    animation: letterIn 0.9s cubic-bezier(.2,.8,.2,1) forwards, hueFlow 4s linear infinite; }
   @keyframes letterIn { 0%{opacity:0;transform:translateZ(-600px) rotateX(90deg) translateY(40px);filter:blur(10px)} 100%{opacity:1;transform:translateZ(0) rotateX(0) translateY(0);filter:blur(0)} }
+  @keyframes hueFlow { to { background-position: 300% center; } }
   .intro-sweep { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(100deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%);
     transform: translateX(-100%) skewX(-15deg); animation: introSweep 1.4s ease 1.8s forwards; }
   @keyframes introSweep { to { transform: translateX(100%) skewX(-15deg); } }
@@ -51,8 +66,8 @@
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center;
     padding: 18px 6vw; background: rgba(6,6,14,0.6); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); transition: padding .3s, background .3s; }
   nav.scrolled { padding: 12px 6vw; background: rgba(6,6,14,0.92); }
-  .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: 1px; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    transition: transform .4s; transform-style: preserve-3d; cursor: pointer; }
+  .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: 1px; background: var(--rainbow); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: hueFlow 5s linear infinite; transition: transform .4s; transform-style: preserve-3d; cursor: pointer; }
   .logo:hover { transform: rotateY(360deg); }
   nav ul { display: flex; gap: 28px; list-style: none; }
   nav a { color: var(--muted); text-decoration: none; font-size: 0.95rem; transition: .3s; }
@@ -61,7 +76,7 @@
 
   /* ===== HERO ===== */
   #hero { position: relative; height: 100vh; overflow: hidden; }
-  #scene { position: absolute; inset: 0; z-index: 0; }
+  #scene { position: absolute; inset: 0; z-index: 1; }
   #cube-scene { position: absolute; top: 14%; right: 8%; width: 120px; height: 120px; z-index: 2; perspective: 600px; pointer-events: none; opacity: .9; }
   .cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: spinCube 9s linear infinite; }
   .cube div { position: absolute; width: 120px; height: 120px; border: 1px solid var(--accent2); background: rgba(108,92,231,0.08); box-shadow: inset 0 0 30px rgba(0,210,255,0.25); }
@@ -70,8 +85,9 @@
   .cube .t { transform: rotateX(90deg) translateZ(60px); } .cube .d { transform: rotateX(-90deg) translateZ(60px); }
   @keyframes spinCube { from { transform: rotateX(0) rotateY(0); } to { transform: rotateX(360deg) rotateY(360deg); } }
   #hero-overlay { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center; }
-  #title { color: #fff; font-weight: 800; font-size: clamp(2.6rem,11vw,7rem); letter-spacing: 10px; opacity: 0; transform: translateY(24px);
-    transition: opacity 1.6s ease, transform 1.6s ease, letter-spacing 1.6s ease; text-shadow: 0 0 40px rgba(120,120,255,0.35); }
+  #title { font-weight: 800; font-size: clamp(2.6rem,11vw,7rem); letter-spacing: 10px; opacity: 0; transform: translateY(24px);
+    background: var(--rainbow); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    transition: opacity 1.6s ease, transform 1.6s ease, letter-spacing 1.6s ease; animation: hueFlow 5s linear infinite; }
   #title.show { opacity: 1; transform: translateY(0); letter-spacing: 14px; }
   #typed { margin-top: 22px; font-size: clamp(0.9rem,2.6vw,1.3rem); letter-spacing: 4px; color: var(--accent2); min-height: 1.4em; opacity: 0; transition: opacity 1.2s ease 0.4s; }
   #typed.show { opacity: 1; }
@@ -84,15 +100,17 @@
   #hint.hide { opacity: 0; }
   @keyframes hintPulse { 0%,100%{opacity:0.3} 50%{opacity:0.7} }
 
-  /* ===== BUTTONS / SECTIONS ===== */
-  .btn { display: inline-block; padding: 14px 32px; border-radius: 40px; background: var(--grad); color: #fff; text-decoration: none; font-weight: 600;
-    transition: transform .3s, box-shadow .3s; box-shadow: 0 8px 30px rgba(108,92,231,0.4); transform-style: preserve-3d; }
-  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,210,255,0.5); }
+  /* ===== BUTTONS ===== */
+  .btn { display: inline-block; padding: 14px 32px; border-radius: 40px; background: var(--rainbow); background-size: 300% auto; color: #fff; text-decoration: none; font-weight: 600;
+    transition: transform .3s, box-shadow .3s; box-shadow: 0 8px 30px rgba(108,92,231,0.4); transform-style: preserve-3d; animation: hueFlow 6s linear infinite, btnGlow 3s ease-in-out infinite; }
+  @keyframes btnGlow { 0%,100%{box-shadow:0 8px 30px rgba(108,92,231,0.4)} 50%{box-shadow:0 8px 40px rgba(0,210,255,0.6)} }
+  .btn:hover { transform: translateY(-3px); }
   .btn:active { transform: translateY(2px) translateZ(-6px) rotateX(12deg); }
-  .btn.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.2); box-shadow: none; }
+  .btn.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.2); box-shadow: none; animation: none; }
   .btn.ghost:hover { border-color: var(--accent2); }
-  section { padding: 100px 6vw; position: relative; z-index: 1; background: var(--bg); }
-  .section-title { text-align: center; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; margin-bottom: 12px; transform-style: preserve-3d; }
+  section { padding: 100px 6vw; position: relative; z-index: 1; background: transparent; }
+  .section-title { text-align: center; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; margin-bottom: 12px; transform-style: preserve-3d;
+    background: var(--rainbow); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: hueFlow 6s linear infinite; cursor: pointer; }
   .section-sub { text-align: center; color: var(--muted); margin-bottom: 60px; }
 
   /* ===== SCROLL REVEAL ===== */
@@ -101,47 +119,57 @@
   .section-title.reveal { transform: perspective(800px) rotateX(35deg) translateY(40px); transform-origin: top; }
   .section-title.reveal.visible { transform: perspective(800px) rotateX(0) translateY(0); }
 
+  /* rainbow flowing border for highlighted cards */
+  .glow-border { position: relative; }
+  .glow-border::before { content: ''; position: absolute; inset: -2px; border-radius: 22px; background: var(--rainbow); background-size: 300% 300%;
+    animation: hueFlow 4s linear infinite; z-index: -1; filter: blur(6px); opacity: .55; }
+
   /* ===== STATS ===== */
-  #stats { background: linear-gradient(180deg, var(--bg), var(--bg2)); }
+  #stats { background: linear-gradient(180deg, rgba(10,10,22,0.4), rgba(6,6,14,0.4)); }
   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; text-align: center; perspective: 1200px; }
-  .stat h3 { font-size: 3rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; transform-style: preserve-3d; }
-  .stat h3.flip3d { animation: coinFlip 1s ease; }
+  .stat h3 { font-size: 3rem; font-weight: 800; background: var(--rainbow); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; transform-style: preserve-3d; animation: hueFlow 5s linear infinite; cursor: pointer; }
+  .stat h3.flip3d { animation: coinFlip 1s ease, hueFlow 5s linear infinite; }
+  .stat h3.clicked3d { animation: statPop .6s ease, hueFlow 5s linear infinite; }
   @keyframes coinFlip { 0% { transform: rotateY(0); } 100% { transform: rotateY(720deg); } }
+  @keyframes statPop { 0%{transform:scale(1) rotateY(0)} 50%{transform:scale(1.3) rotateY(180deg)} 100%{transform:scale(1) rotateY(360deg)} }
   .stat p { color: var(--muted); margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; font-size: .85rem; }
 
-  /* ===== SERVICES (3D flip) ===== */
+  /* ===== SERVICES ===== */
   .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 28px; max-width: 1200px; margin: 0 auto; }
-  .service { perspective: 1000px; }
+  .service { perspective: 1000px; cursor: pointer; }
   .service .flip { position: relative; transform-style: preserve-3d; transition: transform .8s cubic-bezier(.2,.8,.2,1); min-height: 230px; }
   .service:hover .flip { transform: rotateY(180deg); }
+  .service.clicked3d .flip { animation: cardPop .6s ease; }
+  @keyframes cardPop { 0%{transform:scale(1) rotateX(0)} 40%{transform:scale(1.08) rotateX(-12deg) translateZ(40px)} 100%{transform:scale(1) rotateX(0)} }
   .service .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 18px; padding: 34px; background: var(--card);
     border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; justify-content: center; }
-  .service .back { transform: rotateY(180deg); background: linear-gradient(135deg, rgba(108,92,231,0.2), rgba(0,210,255,0.15)); }
+  .service .back { transform: rotateY(180deg); background: linear-gradient(135deg, rgba(108,92,231,0.25), rgba(255,94,219,0.18)); }
   .service .ico { font-size: 2.4rem; margin-bottom: 16px; display: inline-block; transform-style: preserve-3d; animation: float3d 4s ease-in-out infinite; }
   @keyframes float3d { 0%,100%{transform:translateY(0) rotateY(0)} 50%{transform:translateY(-12px) rotateY(180deg)} }
   .service h3 { font-size: 1.2rem; margin-bottom: 10px; }
   .service p { color: var(--muted); font-size: .95rem; line-height: 1.6; }
 
-  /* ===== PROCESS TIMELINE (3D) ===== */
+  /* ===== PROCESS ===== */
   .process { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 28px; max-width: 1100px; margin: 0 auto; perspective: 1000px; }
-  .step { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 34px 26px; text-align: center;
-    transition: transform .5s; transform-style: preserve-3d; }
+  .step { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 34px 26px; text-align: center; transition: transform .5s; transform-style: preserve-3d; }
   .step:hover { transform: rotateX(8deg) rotateY(-8deg) translateY(-6px); }
-  .step .num { font-size: 2.4rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .step .num { font-size: 2.4rem; font-weight: 800; background: var(--rainbow); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: hueFlow 5s linear infinite; }
   .step h3 { margin: 10px 0; font-size: 1.1rem; }
   .step p { color: var(--muted); font-size: .9rem; line-height: 1.5; }
 
   /* ===== PACKAGES ===== */
   .packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 28px; max-width: 1320px; margin: 0 auto; perspective: 1200px; }
   .pkg { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px 30px; text-align: center;
-    transition: transform .4s, border-color .4s, box-shadow .4s; position: relative; overflow: hidden; transform-style: preserve-3d; will-change: transform; }
+    transition: transform .4s, border-color .4s, box-shadow .4s; position: relative; overflow: hidden; transform-style: preserve-3d; will-change: transform; cursor: pointer; }
   .pkg:hover { border-color: var(--accent); box-shadow: 0 20px 50px rgba(108,92,231,0.25); }
   .pkg.featured { border-color: var(--accent2); box-shadow: 0 0 40px rgba(0,210,255,0.15); }
-  .pkg .badge { position: absolute; top: 16px; right: -34px; transform: rotate(45deg); background: var(--grad); color: #fff; font-size: .7rem;
-    padding: 4px 40px; font-weight: 700; transform-style: preserve-3d; animation: badgeSpin 5s linear infinite; }
+  .pkg.clicked3d { animation: cardSpin .9s cubic-bezier(.4,0,.2,1); }
+  @keyframes cardSpin { 0%{transform:rotateY(0)} 100%{transform:rotateY(360deg)} }
+  .pkg .badge { position: absolute; top: 16px; right: -34px; transform: rotate(45deg); background: var(--rainbow); background-size: 300% auto; color: #fff; font-size: .7rem;
+    padding: 4px 40px; font-weight: 700; transform-style: preserve-3d; animation: badgeSpin 5s linear infinite, hueFlow 4s linear infinite; }
   @keyframes badgeSpin { 0%,80%{transform:rotate(45deg) rotateY(0)} 90%{transform:rotate(45deg) rotateY(180deg)} 100%{transform:rotate(45deg) rotateY(360deg)} }
   .pkg h3 { font-size: 1.3rem; margin-bottom: 10px; }
-  .pkg .price { font-size: 2.4rem; font-weight: 800; margin: 14px 0; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .pkg .price { font-size: 2.4rem; font-weight: 800; margin: 14px 0; background: var(--rainbow); background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: hueFlow 5s linear infinite; }
   .pkg .price small { font-size: .9rem; color: var(--muted); -webkit-text-fill-color: var(--muted); }
   .pkg ul { list-style: none; margin: 20px 0 28px; }
   .pkg ul li { color: var(--muted); padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: .9rem; }
@@ -151,13 +179,15 @@
   /* ===== ABOUT ===== */
   .about { max-width: 800px; margin: 0 auto; text-align: center; color: var(--muted); font-size: 1.1rem; line-height: 1.8; }
 
-  /* ===== TESTIMONIALS (3D) ===== */
+  /* ===== TESTIMONIALS ===== */
   .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 28px; max-width: 1100px; margin: 0 auto; perspective: 1200px; }
-  .testi { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 32px; transition: transform .5s; transform-style: preserve-3d; }
+  .testi { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 32px; transition: transform .5s; transform-style: preserve-3d; cursor: pointer; }
   .testi:hover { transform: rotateY(10deg) translateZ(20px); }
+  .testi.clicked3d { animation: testiFlip .8s cubic-bezier(.4,0,.2,1); }
+  @keyframes testiFlip { 0%{transform:rotateY(0)} 100%{transform:rotateY(360deg)} }
   .testi p { color: var(--muted); font-style: italic; line-height: 1.7; margin-bottom: 18px; }
   .testi .who { display: flex; align-items: center; gap: 12px; }
-  .testi .av { width: 42px; height: 42px; border-radius: 50%; background: var(--grad); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; }
+  .testi .av { width: 42px; height: 42px; border-radius: 50%; background: var(--rainbow); background-size: 300% auto; animation: hueFlow 5s linear infinite; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; }
   .testi .who b { display: block; } .testi .who span { color: var(--muted); font-size: .8rem; }
   .stars { color: #ffd25e; margin-bottom: 14px; letter-spacing: 2px; }
 
@@ -174,7 +204,7 @@
   #contact { overflow: hidden; }
   .ring3d { position: absolute; top: 50%; left: 50%; width: 460px; height: 460px; margin: -230px 0 0 -230px; border: 2px solid rgba(0,210,255,0.18);
     border-radius: 50%; transform-style: preserve-3d; animation: ringSpin 16s linear infinite; pointer-events: none; z-index: 0; }
-  .ring3d::before, .ring3d::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid rgba(108,92,231,0.15); }
+  .ring3d::before, .ring3d::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid rgba(255,94,219,0.15); }
   .ring3d::before { transform: rotateX(70deg); } .ring3d::after { transform: rotateY(70deg); }
   @keyframes ringSpin { from { transform: rotateX(60deg) rotateZ(0); } to { transform: rotateX(60deg) rotateZ(360deg); } }
   .contact-box { max-width: 600px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
@@ -184,12 +214,19 @@
   .contact-card a { color: var(--accent2); text-decoration: none; font-size: 1.1rem; }
   .contact-card span { display: block; color: var(--muted); font-size: .8rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 2px; }
 
-  footer { text-align: center; padding: 40px; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); font-size: .9rem; position: relative; z-index: 1; background: var(--bg); }
+  footer { text-align: center; padding: 40px; color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); font-size: .9rem; position: relative; z-index: 1; }
 
   #top-btn { position: fixed; bottom: 26px; left: 26px; z-index: 1000; width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15);
     background: rgba(12,14,22,0.8); color: var(--accent2); cursor: pointer; font-size: 1.2rem; opacity: 0; pointer-events: none; transition: .3s; }
   #top-btn.show { opacity: 1; pointer-events: all; }
   #top-btn:hover { background: var(--accent); color: #fff; }
+
+  /* ===== CLICK 3D EFFECTS ===== */
+  .section-title.clicked3d { animation: titleFlip .7s ease, hueFlow 6s linear infinite; }
+  @keyframes titleFlip { 0%{transform:rotateX(0)} 50%{transform:rotateX(360deg)} 100%{transform:rotateX(0)} }
+  .ripple3d { position: fixed; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%; pointer-events: none; z-index: 9997;
+    border: 2px solid var(--accent2); transform-style: preserve-3d; animation: ripple3d .7s ease-out forwards; }
+  @keyframes ripple3d { 0%{opacity:.9; transform:scale(0) rotateX(60deg)} 100%{opacity:0; transform:scale(5) rotateX(60deg)} }
 
   /* ===== AI CHATBOT ===== */
   #chat-toggle { position: fixed; bottom: 26px; right: 26px; z-index: 1000; width: 64px; height: 64px; border-radius: 50%; border: none; cursor: pointer;
@@ -221,6 +258,7 @@
 </head>
 <body>
 
+<div id="aurora"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
 <div id="grid-bg"></div>
 <div id="cursor-glow"></div>
 
@@ -316,7 +354,7 @@
       <p class="note">+ ₹1,000 for a .in domain</p>
       <a href="#contact" class="btn">Get Started</a>
     </div>
-    <div class="pkg featured reveal">
+    <div class="pkg featured glow-border reveal">
       <div class="badge">POPULAR</div>
       <h3>Pro</h3>
       <div class="price">₹6,999</div>
@@ -516,7 +554,6 @@ function startTyping() {
   }, { threshold: 0.5 });
   document.querySelectorAll('.stat h3').forEach(s => sio.observe(s));
   document.querySelectorAll('.faq-item .faq-q').forEach(q => q.addEventListener('click', () => q.parentElement.classList.toggle('open')));
-  // 3D tilt on package cards
   document.querySelectorAll('.pkg').forEach(card => {
     card.addEventListener('mousemove', e => {
       const r = card.getBoundingClientRect();
@@ -524,6 +561,27 @@ function startTyping() {
       card.style.transform = `translateY(-12px) rotateX(${rx}deg) rotateY(${ry}deg)`;
     });
     card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+})();
+
+/* ===== CLICK 3D ANIMATIONS ===== */
+(function () {
+  function playOnce(el, cls) {
+    el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls);
+    el.addEventListener('animationend', () => el.classList.remove(cls), { once: true });
+  }
+  document.querySelectorAll('.pkg').forEach(c => c.addEventListener('click', e => { if (e.target.closest('a')) return; playOnce(c, 'clicked3d'); }));
+  document.querySelectorAll('.service').forEach(s => s.addEventListener('click', () => playOnce(s, 'clicked3d')));
+  document.querySelectorAll('.section-title').forEach(t => t.addEventListener('click', () => playOnce(t, 'clicked3d')));
+  document.querySelectorAll('.stat h3').forEach(h => h.addEventListener('click', () => playOnce(h, 'clicked3d')));
+  document.querySelectorAll('.testi').forEach(tc => tc.addEventListener('click', () => playOnce(tc, 'clicked3d')));
+  document.addEventListener('click', e => {
+    const r = document.createElement('div'); r.className = 'ripple3d';
+    const hue = Math.floor(Math.random()*360);
+    r.style.borderColor = `hsl(${hue}, 90%, 60%)`;
+    r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px';
+    document.body.appendChild(r);
+    r.addEventListener('animationend', () => r.remove(), { once: true });
   });
 })();
 
